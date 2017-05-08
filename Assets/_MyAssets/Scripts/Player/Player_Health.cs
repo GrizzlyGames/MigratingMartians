@@ -41,8 +41,11 @@ public class Player_Health : MonoBehaviour
     {
         float delay = Random.Range(10, 16);
         yield return new WaitForSeconds(delay);
-        Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        Instantiate(healthPick, new Vector2(Random.Range(-screenVec.x, screenVec.x), Random.Range(-screenVec.y, screenVec.y)), Quaternion.identity);
+        if (game.stateIndex == 2)
+        {
+            Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+            Instantiate(healthPick, new Vector2(Random.Range(-screenVec.x, screenVec.x), Random.Range(-screenVec.y, screenVec.y)), Quaternion.identity);
+        }        
     }
 
     private IEnumerator DeathDelay()

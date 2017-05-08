@@ -6,7 +6,9 @@ public class Game_Manager : MonoBehaviour
 {
     public GameObject menuPanel;
     public GameObject storePanel;
+    public Text upgradeBankText;
     public Text upgradeWaveText;
+    
     [SerializeField]
     private Player_Manager player;
 
@@ -28,6 +30,12 @@ public class Game_Manager : MonoBehaviour
 
         public GameObject topPanel;
         public Text notificationText;
+
+        public int baseCost = 100;
+        public int healthLevel = 0;
+        public int reloadLevel = 0;
+        public int bulletLevel = 0;
+        public int movementLevel = 0;
     }
 
     public bool resetPrefs = true;
@@ -40,7 +48,6 @@ public class Game_Manager : MonoBehaviour
         intermission.moneyText = stateGO[1].transform.GetChild(0).GetChild(1).GetChild(1).GetChild(1).GetComponent<Text>();
         status.topPanel = stateGO[2].transform.GetChild(0).GetChild(1).gameObject;
         status.notificationText = stateGO[2].transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>();
-
         if (resetPrefs)
         {
             PlayerPrefs.DeleteAll();
@@ -83,8 +90,9 @@ public class Game_Manager : MonoBehaviour
             case 1: // Intermission           
                 menuPanel.SetActive(true);
                 storePanel.SetActive(false);
+                upgradeBankText.text = "BANK: " + status.money.ToString("C00");
                 intermission.menuWaveText.text = "WAVE " + status.wave.ToString();
-                intermission.moneyText.text = status.money.ToString("C00");
+                intermission.moneyText.text = "BANK: " + status.money.ToString("C00");
                 upgradeWaveText.text = "WAVE " + status.wave.ToString();
                 player.shield.time = player.shield.duration;             
                 

@@ -67,7 +67,7 @@ public class Enemy_AI : MonoBehaviour
         if (collision.transform.CompareTag("PlayerBullet"))
         {
             Destroy(collision.gameObject);
-            game.status.money += 5;
+            game.status.money += 100;
             health--;
             healthImage.fillAmount = (float)health / (float)maxHealth;
             if (health < 1)
