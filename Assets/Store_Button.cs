@@ -6,11 +6,13 @@ public class Store_Button : MonoBehaviour {
 
     public int index;
 
+    public GameObject closeGO;
     public Store_Button button;
     public Store_Manager store;
 
     public void OpenStore()
     {
+        closeGO.SetActive(false);
         store.OpenStore();
     }
 

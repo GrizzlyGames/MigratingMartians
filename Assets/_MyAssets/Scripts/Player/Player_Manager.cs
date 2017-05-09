@@ -89,7 +89,6 @@ public class Player_Manager : MonoBehaviour
         public float duration = 3.0f;
         public int durability = 1;
         public float rechargeTime = 0.05f;
-        public SpriteRenderer spriteRenderer;
         public Image image;
         public SpriteRenderer sprite;
 
@@ -123,7 +122,6 @@ public class Player_Manager : MonoBehaviour
         health.image =  GameObject.Find("Health Image").GetComponent<Image>();
         health.currentHealth = health.maxHealth;
         weapon.reloadImage = GameObject.Find("Reload Image").GetComponent<Image>();
-        shield.spriteRenderer = GameObject.Find("Shield Sprite").GetComponent<SpriteRenderer>();
         shield.sprite = GameObject.Find("Shield Sprite").GetComponent<SpriteRenderer>();
         shield.image = GameObject.Find("Shield Image").GetComponent<Image>();
         shield.time = shield.duration;

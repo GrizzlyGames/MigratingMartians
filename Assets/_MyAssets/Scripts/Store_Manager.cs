@@ -37,7 +37,7 @@ public class Store_Manager : MonoBehaviour
         reloadCostText.text = (game.status.baseCost * (game.status.reloadLevel + 1)).ToString("C00");
         bulletCostText.text = (game.status.baseCost * (game.status.bulletLevel + 1)).ToString("C00");
         movementCostText.text = (game.status.baseCost * (game.status.movementLevel + 1)).ToString("C00");
-        bankText[0].text = game.status.money.ToString("C00");
+        bankText[0].text = "BANK: " + game.status.money.ToString("C00");
     }
 
     public void SetStore(int i)

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ClampToScreen_Script))]
 public class Enemy_AI : MonoBehaviour
 {
+    public int type = 0;
     public int health;
     public int maxHealth = 1;
     public float speed = 1;
@@ -46,9 +47,10 @@ public class Enemy_AI : MonoBehaviour
                     shootTime = Random.Range(2, 5);
                     destination.x = Random.Range(clamp.GetLimitations().w, clamp.GetLimitations().x);
                     destination.y = Random.Range(0, clamp.GetLimitations().y);
-                    Instantiate(bullet, this.transform.position, Quaternion.identity);
+                    GameObject go = Instantiate(bullet, this.transform.position, Quaternion.identity) as GameObject;
+                    go.GetComponent<Enemy_Bullet>().type = type;
                 }
-                transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);     
+                transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
             }
         }
         else
@@ -63,7 +65,7 @@ public class Enemy_AI : MonoBehaviour
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
-    {        
+    {
         if (collision.transform.CompareTag("PlayerBullet"))
         {
             Destroy(collision.gameObject);
@@ -80,7 +82,7 @@ public class Enemy_AI : MonoBehaviour
     }
     public void Death()
     {
-        Instantiate(explosion, this.transform.position, Quaternion.identity);        
+        Instantiate(explosion, this.transform.position, Quaternion.identity);
         game.EnemyKilled();
         Destroy(this.gameObject);
     }

@@ -24,7 +24,7 @@ public class Player_Health : MonoBehaviour
             else
             {
                 if (!player.shield.isActive)
-                {
+                {                    
                     player.health.currentHealth--;
                     player.health.UpdateBar();
                     int chance = Random.Range(0, 5);
@@ -33,7 +33,14 @@ public class Player_Health : MonoBehaviour
                     if (player.health.currentHealth < 1)
                         StartCoroutine(DeathDelay());
                 }
-            }               
+                else
+                {
+                    Debug.Log("Player shield.");
+                    Destroy(other.gameObject);
+                }
+            }
+            if (other.gameObject.tag == "EnemyBullet")
+                Destroy(other.gameObject);
         }
     }
 

@@ -5,12 +5,10 @@ using UnityEngine;
 public class Player_Input : MonoBehaviour
 {
     private Player_Manager player;
-    private Game_Manager game;
 
     private void Start()
     {
         player = GetComponent<Player_Manager>();
-        game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
     }
 
     private void Update()

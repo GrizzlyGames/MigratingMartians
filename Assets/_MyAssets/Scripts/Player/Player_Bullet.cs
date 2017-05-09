@@ -11,11 +11,24 @@ public class Player_Bullet : MonoBehaviour
         transform.Translate((Vector2.up * speed * Time.deltaTime));
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "EnemyBullet")
         {
-            Destroy(other.gameObject);
+            switch (other.transform.GetComponent<Enemy_Bullet>().type)
+            {
+                case 2:
+                    Destroy(other.gameObject);
+                    break;
+                case 3:
+                    Destroy(this.gameObject);
+                    break;
+                case 4:
+                    Destroy(other.gameObject);
+                    break;
+            }
         }
     }
+
 }
+

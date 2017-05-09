@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class Player_Shield : MonoBehaviour
 {
+    public GameObject shieldGO;
     private Player_Manager player;
 
     private void Start()
     {
         player = GetComponent<Player_Manager>();
+        shieldGO.SetActive(false);
     }
 
     private void Update()
     {
         if (player.shield.isActive)
         {
-            if (player.shield.spriteRenderer.enabled == false)
-                player.shield.spriteRenderer.enabled = true;
-            player.shield.time -= Time.deltaTime;
-            player.shield.UpdateDisplay();
+            shieldGO.SetActive(true);
+            player.shield.time -= Time.deltaTime;            
             if (player.shield.time <= 0)
             {
                 player.shield.isActive = false;
-                player.shield.spriteRenderer.enabled = false;
+                shieldGO.SetActive(false);
             }
         }
         else
@@ -30,8 +30,8 @@ public class Player_Shield : MonoBehaviour
             if(player.shield.time < player.shield.duration)
             {
                 player.shield.time += Time.deltaTime * player.shield.rechargeTime;
-                player.shield.UpdateDisplay();
             }            
         }
+        player.shield.UpdateDisplay();
     }
 }
