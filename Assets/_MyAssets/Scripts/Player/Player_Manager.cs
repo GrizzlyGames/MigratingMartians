@@ -6,11 +6,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 public class Player_Manager : MonoBehaviour
 {
-    public int state = 0;
-    public GameObject[] stateGO;
-
-    public bool isEnabled = true;
-
     private Game_Manager game;
 
     public GameObject projectile;
@@ -32,18 +27,18 @@ public class Player_Manager : MonoBehaviour
     public Movement movement = new Movement();
     public class Movement
     {
-        public float speed = 1;
+        public float speed = 0.5f;
     }
 
     public Health health = new Health();
     public class Health
     {
         public bool isAlive = true;
-        public int currentHealth = 3;
-        public int maxHealth = 3;
+        public int currentHealth = 6;
+        public int maxHealth = 6;
         public Image image;
 
-        public void UpdateBar()
+        public void UpdateStatsBar()
         {
             image.fillAmount = ((float)currentHealth / (float)maxHealth);
         }
@@ -53,8 +48,8 @@ public class Player_Manager : MonoBehaviour
     public class Weapon
     {
         public float time = 0;
-        public float fireRate = 2;
-        public float bulletSpeed = 10;
+        public float fireRate = 3;
+        public float bulletSpeed = 1;
         public AudioSource audioSource;
         public GameObject projectileGO;
         public Transform spawnTransform;
@@ -85,52 +80,44 @@ public class Player_Manager : MonoBehaviour
     public class Shield
     {
         public bool isActive = false;
-        public float time = 1.0f;
         public float duration = 3.0f;
+        public float time = 3.0f;        
         public int durability = 1;
-        public float rechargeTime = 0.05f;
+        public float rechargeTime = 0.1f;
         public Image image;
         public SpriteRenderer sprite;
 
         public void UpdateDisplay()
         {
+            Debug.Log("Update shield.");
             float amount = ((float)time / (float)duration);
             image.fillAmount = amount;
             float alpha = (float)255 * (float)amount;
-            sprite.color = new Color32(0, 255, 255, (byte)alpha);
+            sprite.color = new Color32(0, 255, 255, (byte)alpha);      
         }
     }
 
-    private void StateChecker()
-    {
-        for (int i = 0; i < stateGO.Length; i++)
-        {
-            if (i == state)
-                stateGO[i].SetActive(true);
-            else
-                stateGO[i].SetActive(false);
-        }
-    }
+    public Image healthImage;
+    public Image reloadImage;
+    public Image shieldImage;
 
-    private void Awake()
+    private void Start()
     {
+        health.image = healthImage;
+        weapon.reloadImage = reloadImage;
+        shield.image = shieldImage;
+
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
         weapon.audioSource = GetComponent<AudioSource>();
         weapon.turretTransform = transform.GetChild(0).GetChild(0);
         weapon.spawnTransform = weapon.turretTransform.GetChild(0);
         weapon.projectileGO = projectile;
-        health.image =  GameObject.Find("Health Image").GetComponent<Image>();
-        health.currentHealth = health.maxHealth;
-        weapon.reloadImage = GameObject.Find("Reload Image").GetComponent<Image>();
-        shield.sprite = GameObject.Find("Shield Sprite").GetComponent<SpriteRenderer>();
-        shield.image = GameObject.Find("Shield Image").GetComponent<Image>();
-        shield.time = shield.duration;
-        shield.UpdateDisplay();
+        shield.sprite = transform.GetChild(1).GetComponent<SpriteRenderer>();        
     }
     private void Update()
     {
         #region Weapon
-        if (!weapon.canShoot && game.status.waveStart)
+        if (!weapon.canShoot && game.statistics.waveStart)
         {
             weapon.time += Time.deltaTime;
             weapon.UpdateDisplay();
@@ -148,26 +135,20 @@ public class Player_Manager : MonoBehaviour
         #endregion
     }
 
-    public void SetEnabled(bool state)
-    {
-        isEnabled = state;
-        if (state)
-        {
-            this.transform.GetChild(0).gameObject.SetActive(true);
-            this.transform.GetChild(1).gameObject.SetActive(true);
-        }
-        else
-        {
-            this.transform.GetChild(0).gameObject.SetActive(false);
-            this.transform.GetChild(1).gameObject.SetActive(false);
-        }
-    }
     private void OnMouseDown()
     {
         if (!shield.isActive && shield.time >= shield.duration)
         {
-            shield.time = shield.duration;
             shield.isActive = true;
         }
+    }
+
+    public void PlayerReset()
+    {
+        weapon.canShoot = true;
+        health.currentHealth = health.maxHealth;
+        weapon.time = weapon.fireRate;
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);        
     }
 }

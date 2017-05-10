@@ -18,10 +18,10 @@ public class Player_Bullet : MonoBehaviour
             switch (other.transform.GetComponent<Enemy_Bullet>().type)
             {
                 case 2:
-                    Destroy(other.gameObject);
+                    Destroy(this.gameObject);
                     break;
                 case 3:
-                    Destroy(this.gameObject);
+                    Destroy(other.gameObject);
                     break;
                 case 4:
                     Destroy(other.gameObject);

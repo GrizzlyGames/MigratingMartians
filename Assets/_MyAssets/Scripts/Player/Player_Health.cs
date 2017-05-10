@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Player_Manager))]
 public class Player_Health : MonoBehaviour
 {
-    public GameObject healthPick;
+    public GameObject health;
     private Player_Manager player;
     private Game_Manager game;
 
@@ -26,7 +26,7 @@ public class Player_Health : MonoBehaviour
                 if (!player.shield.isActive)
                 {                    
                     player.health.currentHealth--;
-                    player.health.UpdateBar();
+                    player.health.UpdateStatsBar();
                     int chance = Random.Range(0, 5);
                     if (chance == 0)
                         StartCoroutine(SpawnHealthDelay());
@@ -48,22 +48,20 @@ public class Player_Health : MonoBehaviour
     {
         float delay = Random.Range(10, 16);
         yield return new WaitForSeconds(delay);
-        if (game.stateIndex == 2)
+        if (game.screenIndex == 2)
         {
             Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-            Instantiate(healthPick, new Vector2(Random.Range(-screenVec.x, screenVec.x), Random.Range(-screenVec.y, screenVec.y)), Quaternion.identity);
+            Instantiate(health, new Vector2(Random.Range(-screenVec.x, screenVec.x), Random.Range(-screenVec.y, screenVec.y)), Quaternion.identity);
         }        
     }
 
     private IEnumerator DeathDelay()
     {
         player.health.isAlive = false;
-        game.status.topPanel.SetActive(true);
-        game.status.notificationText.text = "GAME OVER";
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);
         yield return new WaitForSeconds(5);
-        game.stateIndex = 4;
-        game.StateChecker();
+        game.screenIndex = 3;
+        game.screenManager.ScreenChanger(2);
     }
 }

@@ -1,17 +1,17 @@
 fileFormatVersion: 2
 guid: c500c146cca4d5c429fef1ba2306b0d6
-timeCreated: 1453774367
+timeCreated: 1494370458
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: PlayerBullet
     21300002: EnemyBullet
-  serializedVersion: 2
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
     mipMapFadeDistanceStart: 1
@@ -23,10 +23,8 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 8
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 256
@@ -37,9 +35,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
@@ -47,12 +43,52 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 500
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 256
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 256
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 256
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 256
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: PlayerBullet
+    - serializedVersion: 2
+      name: PlayerBullet
       rect:
         serializedVersion: 2
         x: 0
@@ -62,16 +98,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -35.5, y: 97.5}
-        - {x: -36.5, y: 92.5}
-        - {x: -36.5, y: -71.5}
-        - {x: -17.5, y: -97.5}
-        - {x: 14.5, y: -97.5}
-        - {x: 36.5, y: -64.5}
-        - {x: 36.5, y: 71.5}
-        - {x: 30.5, y: 97.5}
-    - name: EnemyBullet
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: EnemyBullet
       rect:
         serializedVersion: 2
         x: 316
@@ -81,15 +111,8 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -23.414246, y: 48.48681}
-        - {x: -46.414246, y: 37.48681}
-        - {x: -46.414246, y: -35.51319}
-        - {x: -37.414246, y: -46.51319}
-        - {x: 29.585754, y: -46.51319}
-        - {x: 47.585754, y: -34.51319}
-        - {x: 47.585754, y: 32.48681}
-        - {x: 30.585754, y: 48.48681}
+      outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 
