@@ -16,11 +16,13 @@ public class Player_Shield : MonoBehaviour
         if (player.shield.isActive)
         {
             player.shield.sprite.enabled = true;
+            player.shield.collider.enabled = true;
             player.shield.time -= Time.deltaTime;            
             if (player.shield.time <= 0)
             {
                 player.shield.isActive = false;
                 player.shield.sprite.enabled = false;
+                player.shield.collider.enabled = false;
             }
             player.shield.UpdateDisplay();
         }

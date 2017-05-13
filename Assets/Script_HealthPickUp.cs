@@ -16,10 +16,10 @@ public class Script_HealthPickUp : MonoBehaviour
     private void OnMouseDown()
     {
         Player_Manager player = GameObject.Find("Player").GetComponent<Player_Manager>();
-        if (player.health.currentHealth < player.health.maxHealth)
+        if (player.armour.currentArmour < player.armour.maxArmour)
         {
-            player.health.currentHealth += 1;
-            player.health.UpdateStatsBar();
+            player.armour.currentArmour += 1;
+            player.armour.UpdateStatsBar();
             Destroy(this.gameObject);
         }
     }

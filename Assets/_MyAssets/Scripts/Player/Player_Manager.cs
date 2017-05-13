@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 public class Player_Manager : MonoBehaviour
 {
-    private Game_Manager game;
+    public Game_Manager game;
 
     public GameObject projectile;
 
@@ -30,17 +30,17 @@ public class Player_Manager : MonoBehaviour
         public float speed = 0.5f;
     }
 
-    public Health health = new Health();
+    public Health armour = new Health();
     public class Health
     {
         public bool isAlive = true;
-        public int currentHealth = 6;
-        public int maxHealth = 6;
+        public int currentArmour = 3;
+        public int maxArmour = 3;
         public Image image;
 
         public void UpdateStatsBar()
         {
-            image.fillAmount = ((float)currentHealth / (float)maxHealth);
+            image.fillAmount = ((float)currentArmour / (float)maxArmour);
         }
     }
 
@@ -49,9 +49,10 @@ public class Player_Manager : MonoBehaviour
     {
         public float time = 0;
         public float fireRate = 3;
-        public float bulletSpeed = 1;
+        public float bulletSpeed = 2;
         public AudioSource audioSource;
         public GameObject projectileGO;
+        public Transform trashCollocter;
         public Transform spawnTransform;
         public Transform turretTransform;
         public bool canShoot;
@@ -65,8 +66,9 @@ public class Player_Manager : MonoBehaviour
                 canShoot = false;
                 reloadImage.fillAmount = 0;
                 audioSource.Play();
-                GameObject go = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
-                go.GetComponent<Player_Bullet>().speed = bulletSpeed;
+                GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
+                bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
+                bullet.transform.SetParent(trashCollocter);
             }
         }
 
@@ -81,19 +83,18 @@ public class Player_Manager : MonoBehaviour
     {
         public bool isActive = false;
         public float duration = 3.0f;
-        public float time = 3.0f;        
-        public int durability = 1;
+        public float time = 3.0f;
         public float rechargeTime = 0.1f;
+        public CircleCollider2D collider;
         public Image image;
         public SpriteRenderer sprite;
 
         public void UpdateDisplay()
         {
-            Debug.Log("Update shield.");
             float amount = ((float)time / (float)duration);
             image.fillAmount = amount;
             float alpha = (float)255 * (float)amount;
-            sprite.color = new Color32(0, 255, 255, (byte)alpha);      
+            sprite.color = new Color32(0, 255, 255, (byte)alpha);
         }
     }
 
@@ -103,16 +104,18 @@ public class Player_Manager : MonoBehaviour
 
     private void Start()
     {
-        health.image = healthImage;
+        armour.image = healthImage;
         weapon.reloadImage = reloadImage;
         shield.image = shieldImage;
 
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
+        weapon.trashCollocter = game.trashCollocter;
         weapon.audioSource = GetComponent<AudioSource>();
         weapon.turretTransform = transform.GetChild(0).GetChild(0);
         weapon.spawnTransform = weapon.turretTransform.GetChild(0);
         weapon.projectileGO = projectile;
-        shield.sprite = transform.GetChild(1).GetComponent<SpriteRenderer>();        
+        shield.sprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        shield.collider = transform.GetChild(1).GetComponent<CircleCollider2D>();
     }
     private void Update()
     {
@@ -145,10 +148,9 @@ public class Player_Manager : MonoBehaviour
 
     public void PlayerReset()
     {
-        weapon.canShoot = true;
-        health.currentHealth = health.maxHealth;
+        armour.currentArmour = armour.maxArmour;
         weapon.time = weapon.fireRate;
         transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(1).gameObject.SetActive(true);        
+        transform.GetChild(1).gameObject.SetActive(true);
     }
 }

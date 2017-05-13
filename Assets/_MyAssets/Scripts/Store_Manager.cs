@@ -17,41 +17,50 @@ public class Store_Manager : MonoBehaviour
         switch (i) 
         {
             case 0: // Cannon
-                if (game.statistics.money >= game.store.cannonCost)
+                if (game.statistics.money >= game.store.cannonCost && player.weapon.fireRate > 0.5f)
                 {
-                    player.weapon.bulletSpeed *= 2;
-                    game.statistics.money -= game.store.cannonCost;
+                    player.weapon.fireRate -= 0.1f;
+                    player.weapon.bulletSpeed += 0.5f;
+                    Debug.Log("Player weapon fireRate: " + player.weapon.fireRate);
+                    Debug.Log("Player weapon bulletSpeed: " + player.weapon.bulletSpeed);
+
+                    game.statistics.BankWithdrawal(game.store.cannonCost);
                     game.store.cannonCost *= 2;
-                    game.screenManager.OpenStore();
+                    game.screenManager.SetStore();
                 }
                 break;
             case 1: // Shield
-                if (game.statistics.money >= game.store.shieldCost)
+                if (game.statistics.money >= game.store.shieldCost && player.shield.duration < 5.5f)
                 {
-                    player.shield.rechargeTime *= 2;
-                    player.shield.durability += 1;
-                    game.statistics.money -= game.store.shieldCost;
-                    game.store.armourCost *= 2;
-                    game.screenManager.OpenStore();
+                    player.shield.duration += 0.25f;
+                    player.shield.rechargeTime += .025f;
+                    Debug.Log("Player shield duration: " + player.shield.duration);
+                    Debug.Log("Player shield rechargeTime: " + player.shield.rechargeTime);
+
+                    game.statistics.BankWithdrawal(game.store.shieldCost);
+                    game.store.shieldCost *= 2;
+                    game.screenManager.SetStore();
                 }
                 break;
             case 2: // Treads
-                if (game.statistics.money >= game.store.treadCost)
+                if (game.statistics.money >= game.store.treadCost && player.movement.speed < 3)
                 {
-                    player.movement.speed++;
-                    game.statistics.money -= game.store.treadCost;
+                    player.movement.speed += 0.15f;
+                    Debug.Log("Player movement speed: " + player.movement.speed);
+                    game.statistics.BankWithdrawal(game.store.treadCost);
                     game.store.treadCost *= 2;
-                    game.screenManager.OpenStore();
+                    game.screenManager.SetStore();
                 }
                 break;
             case 3: // Armour
                 if (game.statistics.money >= game.store.armourCost)
                 {
-                    player.health.maxHealth += 3;
-                    player.health.currentHealth = player.health.maxHealth;
-                    game.statistics.money -= game.store.armourCost;
+                    player.armour.maxArmour++;
+                    Debug.Log("Player armour: " + player.armour.maxArmour);
+                    player.armour.currentArmour = player.armour.maxArmour;
+                    game.statistics.BankWithdrawal(game.store.armourCost);
                     game.store.armourCost *= 2;
-                    game.screenManager.OpenStore();
+                    game.screenManager.SetStore();
                 }
                 break;
         }        

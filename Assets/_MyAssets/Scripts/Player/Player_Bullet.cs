@@ -6,6 +6,14 @@ public class Player_Bullet : MonoBehaviour
     [HideInInspector]
     public float speed;
 
+    [HideInInspector]
+    public Game_Manager game;
+
+    private void Start()
+    {
+        game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
+    }
+
     private void Update()
     {
         transform.Translate((Vector2.up * speed * Time.deltaTime));
@@ -21,9 +29,11 @@ public class Player_Bullet : MonoBehaviour
                     Destroy(this.gameObject);
                     break;
                 case 3:
+                    game.statistics.BankDeposit(500);
                     Destroy(other.gameObject);
                     break;
                 case 4:
+                    game.statistics.BankDeposit(25);
                     Destroy(other.gameObject);
                     break;
             }

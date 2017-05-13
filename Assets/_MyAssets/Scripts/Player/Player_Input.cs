@@ -13,7 +13,7 @@ public class Player_Input : MonoBehaviour
 
     private void Update()
     {
-        if (player.health.isAlive)
+        if (player.armour.isAlive)
         {
             if (Input.GetMouseButtonDown(0))
             {

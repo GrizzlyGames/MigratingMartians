@@ -25,12 +25,12 @@ public class Player_Health : MonoBehaviour
             {
                 if (!player.shield.isActive)
                 {                    
-                    player.health.currentHealth--;
-                    player.health.UpdateStatsBar();
+                    player.armour.currentArmour--;
+                    player.armour.UpdateStatsBar();
                     int chance = Random.Range(0, 5);
                     if (chance == 0)
                         StartCoroutine(SpawnHealthDelay());
-                    if (player.health.currentHealth < 1)
+                    if (player.armour.currentArmour < 1)
                         StartCoroutine(DeathDelay());
                 }
                 else
@@ -48,7 +48,7 @@ public class Player_Health : MonoBehaviour
     {
         float delay = Random.Range(10, 16);
         yield return new WaitForSeconds(delay);
-        if (game.screenIndex == 2)
+        if (game.screenManager.screenIndex == 2)
         {
             Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
             Instantiate(health, new Vector2(Random.Range(-screenVec.x, screenVec.x), Random.Range(-screenVec.y, screenVec.y)), Quaternion.identity);
@@ -57,11 +57,11 @@ public class Player_Health : MonoBehaviour
 
     private IEnumerator DeathDelay()
     {
-        player.health.isAlive = false;
+        player.armour.isAlive = false;
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);
         yield return new WaitForSeconds(5);
-        game.screenIndex = 3;
-        game.screenManager.ScreenChanger(2);
+        game.screenManager.screenIndex = 3;
+        game.screenManager.ScreenChanger(5);
     }
 }
