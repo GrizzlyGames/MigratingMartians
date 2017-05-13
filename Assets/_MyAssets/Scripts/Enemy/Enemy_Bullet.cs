@@ -48,7 +48,7 @@ public class Enemy_Bullet : MonoBehaviour
         {
             case 2:
                 this.transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * Time.deltaTime);
-                if (this.transform.position.y <= clamp.GetLimitations().z * 0.6f)
+                if (this.transform.position.y <= clamp.GetLimitations().z * 0.7f)
                     Destroy(gameObject);
                 break;
             case 3:

@@ -50,6 +50,7 @@ public class Player_Manager : MonoBehaviour
         public float time = 0;
         public float fireRate = 3;
         public float bulletSpeed = 2;
+        public Game_Manager _game;
         public AudioSource audioSource;
         public GameObject projectileGO;
         public Transform trashCollocter;
@@ -63,12 +64,14 @@ public class Player_Manager : MonoBehaviour
         {
             if (canShoot)
             {
+                _game.statistics.playerBulletsFired++;
+                _game.statistics.money -= 500;
                 canShoot = false;
                 reloadImage.fillAmount = 0;
                 audioSource.Play();
                 GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
-                bullet.transform.SetParent(trashCollocter);
+                bullet.transform.SetParent(trashCollocter);                
             }
         }
 
@@ -84,7 +87,7 @@ public class Player_Manager : MonoBehaviour
         public bool isActive = false;
         public float duration = 3.0f;
         public float time = 3.0f;
-        public float rechargeTime = 0.1f;
+        public float rechargeTime = 0.15f;
         public CircleCollider2D collider;
         public Image image;
         public SpriteRenderer sprite;
@@ -109,6 +112,7 @@ public class Player_Manager : MonoBehaviour
         shield.image = shieldImage;
 
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
+        weapon._game = game;
         weapon.trashCollocter = game.trashCollocter;
         weapon.audioSource = GetComponent<AudioSource>();
         weapon.turretTransform = transform.GetChild(0).GetChild(0);
@@ -124,7 +128,7 @@ public class Player_Manager : MonoBehaviour
         {
             weapon.time += Time.deltaTime;
             weapon.UpdateDisplay();
-            if (Mathf.Abs((int)weapon.time) >= weapon.fireRate)
+            if (weapon.time >= weapon.fireRate)
             {
                 weapon.canShoot = true;
                 weapon.time = 0;
@@ -148,6 +152,11 @@ public class Player_Manager : MonoBehaviour
 
     public void PlayerReset()
     {
+        int armourRepaired = armour.maxArmour - armour.currentArmour;
+        Debug.Log("Armour repaired " + armourRepaired);
+        game.statistics.money -= (2500 * armourRepaired);
+        Debug.Log("Armour repair cost: " + (2500 * armourRepaired));
+        game.statistics.playerArmourRepairs += armourRepaired;
         armour.currentArmour = armour.maxArmour;
         weapon.time = weapon.fireRate;
         transform.GetChild(0).gameObject.SetActive(true);

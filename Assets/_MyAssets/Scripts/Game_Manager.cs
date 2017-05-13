@@ -8,7 +8,7 @@ public class Game_Manager : MonoBehaviour
     public float difficultyMultiplier = 0.025f;
     public GameObject topPanelGO;
     public Text notificationText;
-    
+
     public Player_Manager player;
     public Screen_Manager screenManager;
 
@@ -20,6 +20,15 @@ public class Game_Manager : MonoBehaviour
         public int money = 0;
         public int enemiesSpawned = 0;
         public int enemiesKilled = 0;
+
+        public int playerBulletsFired = 0;
+        public int playerArmourRepairs = 0;
+        public int enemyBulletType3Destroyed = 0;
+        public int enemyBulletType4Destroyed = 0;
+        public int enemyType1Killed = 0;
+        public int enemyType2Killed = 0;
+        public int enemyType3Killed = 0;
+        public int enemyType4Killed = 0;
 
         public void BankDeposit(int amt)
         {
@@ -54,13 +63,13 @@ public class Game_Manager : MonoBehaviour
         {
             PlayerPrefs.DeleteAll();
         }
-    }   
-    
+    }
+
     public void EnemyKilled()
     {
         statistics.enemiesKilled++;
         if (statistics.enemiesKilled >= statistics.enemiesSpawned)
-        {            
+        {
             statistics.waveStart = false;
             player.weapon.time = player.weapon.fireRate;
             player.weapon.reloadImage.fillAmount = player.weapon.time / player.weapon.fireRate;
@@ -69,9 +78,8 @@ public class Game_Manager : MonoBehaviour
     }
     public void SpawnEnemy()
     {
-        if(screenManager.screenIndex == 4)
+        if (screenManager.screenIndex == 4)
         {
-            statistics.enemiesSpawned++;
             int rnd = Random.Range(0, Enemies.Length);
             Transform trans = GameObject.FindGameObjectWithTag("Player").transform;
             if (!trans)
@@ -106,7 +114,7 @@ public class Game_Manager : MonoBehaviour
                       "flySpeed: " + go.GetComponent<Enemy_AI>().flySpeed + "\n" +
                       "fireRate: " + go.GetComponent<Enemy_AI>().fireRate + "\n" +
                       "bulletSpeed: " + go.GetComponent<Enemy_AI>().bulletSpeed);
-        }        
+        }
     }
 
     public IEnumerator WaveStart()
@@ -135,7 +143,8 @@ public class Game_Manager : MonoBehaviour
         notificationText.text = "FIGHT!";
         yield return new WaitForSeconds(1);
         statistics.waveStart = true;
-        topPanelGO.SetActive(false);        
+        topPanelGO.SetActive(false);
+        statistics.enemiesSpawned = statistics.wave + 1;
         SpawnEnemy();
         for (int i = 0; i < statistics.wave; i++)
         {
@@ -146,11 +155,11 @@ public class Game_Manager : MonoBehaviour
     }
     IEnumerator WaveCompleteDelay()
     {
-            topPanelGO.SetActive(true);
-            notificationText.text = "WAVE COMPLETE!";
-            yield return new WaitForSeconds(3);
-            screenManager.screenIndex = 1;
-            statistics.wave++;
-            screenManager.ScreenChanger(3);       
+        topPanelGO.SetActive(true);
+        notificationText.text = "WAVE COMPLETE!";
+        yield return new WaitForSeconds(3);
+        screenManager.screenIndex = 1;
+        statistics.wave++;
+        screenManager.ScreenChanger(3);
     }
 }

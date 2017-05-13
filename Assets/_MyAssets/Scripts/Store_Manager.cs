@@ -19,7 +19,7 @@ public class Store_Manager : MonoBehaviour
             case 0: // Cannon
                 if (game.statistics.money >= game.store.cannonCost && player.weapon.fireRate > 0.5f)
                 {
-                    player.weapon.fireRate -= 0.1f;
+                    player.weapon.fireRate -= 0.25f;
                     player.weapon.bulletSpeed += 0.5f;
                     Debug.Log("Player weapon fireRate: " + player.weapon.fireRate);
                     Debug.Log("Player weapon bulletSpeed: " + player.weapon.bulletSpeed);

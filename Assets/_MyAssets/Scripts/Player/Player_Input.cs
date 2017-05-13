@@ -33,7 +33,7 @@ public class Player_Input : MonoBehaviour
             }
             if (Input.GetMouseButtonDown(1))
             {
-                player.weapon.Shoot();
+                player.weapon.Shoot();                
             }
 
             player.input.mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - Camera.main.transform.position.z));

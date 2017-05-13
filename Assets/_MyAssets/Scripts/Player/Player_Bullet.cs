@@ -29,11 +29,13 @@ public class Player_Bullet : MonoBehaviour
                     Destroy(this.gameObject);
                     break;
                 case 3:
-                    game.statistics.BankDeposit(500);
+                    game.statistics.enemyBulletType3Destroyed++;
+                    game.statistics.BankDeposit(1500);
                     Destroy(other.gameObject);
                     break;
                 case 4:
-                    game.statistics.BankDeposit(25);
+                    game.statistics.enemyBulletType4Destroyed++;
+                    game.statistics.BankDeposit(500);
                     Destroy(other.gameObject);
                     break;
             }

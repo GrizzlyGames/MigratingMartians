@@ -81,16 +81,16 @@ public class Enemy_AI : MonoBehaviour
             switch (type)
             {
                 case 1:
-                    game.statistics.BankDeposit(5000);
+                    game.statistics.BankDeposit(2000);
                     break;
                 case 2:
-                    game.statistics.BankDeposit(7500);
+                    game.statistics.BankDeposit(12500);
                     break;
                 case 3:
-                    game.statistics.BankDeposit(7500);
+                    game.statistics.BankDeposit(12500);
                     break;
                 case 4:
-                    game.statistics.BankDeposit(12500);
+                    game.statistics.BankDeposit(10000);
                     break;
             }
             health--;
@@ -106,6 +106,21 @@ public class Enemy_AI : MonoBehaviour
     }
     public void Death()
     {
+        switch (type)
+        {
+            case 1:
+                game.statistics.enemyType1Killed++;
+                break;
+            case 2:
+                game.statistics.enemyType2Killed++;
+                break;
+            case 3:
+                game.statistics.enemyType3Killed++;
+                break;
+            case 4:
+                game.statistics.enemyType4Killed++;
+                break;
+        }
         GameObject go = Instantiate(explosion, this.transform.position, Quaternion.identity) as GameObject;
         go.transform.SetParent(game.trashCollocter);
         game.EnemyKilled();
