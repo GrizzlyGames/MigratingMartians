@@ -12,6 +12,7 @@ public class Game_Manager : MonoBehaviour
     public Player_Manager player;
     public Screen_Manager screenManager;
 
+
     public Statistics statistics = new Statistics();
     public class Statistics
     {

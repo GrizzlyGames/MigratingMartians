@@ -40,6 +40,7 @@ public class Screen_Manager : MonoBehaviour
 
     public Player_Manager player;
     private Game_Manager game;
+    public Audio_Manager audio;
 
     private void Start()
     {
@@ -60,7 +61,7 @@ public class Screen_Manager : MonoBehaviour
     public void ScreenChanger(int index)
     {
         screenIndex = index;
-        // Switches Screens
+        audio.ChangeSceneMusic(index);
         for (int i = 0; i < sceenGO.Length; i++)
         {
             if (i == screenIndex)
@@ -79,7 +80,7 @@ public class Screen_Manager : MonoBehaviour
                 game.statistics.wave = 1;
                 game.statistics.money = 0;
                 break;
-            case 1: // Home
+            case 1: // Home                
                 break;
             case 2: // Score          
                 break;
