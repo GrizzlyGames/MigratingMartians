@@ -84,10 +84,16 @@ public class Screen_Manager : MonoBehaviour
             case 2: // Score          
                 break;
             case 3: // Game-Menu                
+                if (player.armour.isAlive)
                     SetStore();
+                else
+                    ScreenChanger(5);
                 break;
-            case 4: // Gameplay                
-                StartCoroutine(game.WaveStart());
+            case 4: // Gameplay
+                if (player.armour.isAlive)
+                    StartCoroutine(game.WaveStart());
+                else
+                    ScreenChanger(5);                
                 break;
             case 5: // Game Over
                 playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();

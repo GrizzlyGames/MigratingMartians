@@ -33,7 +33,7 @@ public class Store_Manager : MonoBehaviour
                 if (game.statistics.money >= game.store.shieldCost && player.shield.duration < 5.5f)
                 {
                     player.shield.duration += 0.25f;
-                    player.shield.rechargeTime += .025f;
+                    player.shield.rechargeTime += .05f;
                     Debug.Log("Player shield duration: " + player.shield.duration);
                     Debug.Log("Player shield rechargeTime: " + player.shield.rechargeTime);
 
@@ -45,7 +45,7 @@ public class Store_Manager : MonoBehaviour
             case 2: // Treads
                 if (game.statistics.money >= game.store.treadCost && player.movement.speed < 3)
                 {
-                    player.movement.speed += 0.15f;
+                    player.movement.speed += 0.25f;
                     Debug.Log("Player movement speed: " + player.movement.speed);
                     game.statistics.BankWithdrawal(game.store.treadCost);
                     game.store.treadCost *= 2;

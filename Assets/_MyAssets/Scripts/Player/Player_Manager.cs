@@ -27,7 +27,7 @@ public class Player_Manager : MonoBehaviour
     public Movement movement = new Movement();
     public class Movement
     {
-        public float speed = 0.5f;
+        public float speed = 0.75f;
     }
 
     public Health armour = new Health();
@@ -49,7 +49,7 @@ public class Player_Manager : MonoBehaviour
     {
         public float time = 0;
         public float fireRate = 3;
-        public float bulletSpeed = 2;
+        public float bulletSpeed = 3;
         public Game_Manager _game;
         public AudioSource audioSource;
         public GameObject projectileGO;
@@ -87,7 +87,7 @@ public class Player_Manager : MonoBehaviour
         public bool isActive = false;
         public float duration = 3.0f;
         public float time = 3.0f;
-        public float rechargeTime = 0.15f;
+        public float rechargeTime = 0.05f;
         public CircleCollider2D collider;
         public Image image;
         public SpriteRenderer sprite;

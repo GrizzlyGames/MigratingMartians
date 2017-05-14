@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Game_Manager : MonoBehaviour
 {
     public Transform trashCollocter;
-    public float difficultyMultiplier = 0.025f;
+    public float difficultyMultiplier = 0.05f;
     public GameObject topPanelGO;
     public Text notificationText;
 
@@ -95,19 +95,22 @@ public class Game_Manager : MonoBehaviour
                     go.GetComponent<Enemy_AI>().flySpeed = 0.3f + (statistics.wave * difficultyMultiplier);
                     break;
                 case 1:
-                    go.GetComponent<Enemy_AI>().flySpeed = 0.4f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.5f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().fireRate = 7 - (statistics.wave * difficultyMultiplier);
-                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.5f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 1 + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().shootTime = 5;
                     break;
                 case 2:
                     go.GetComponent<Enemy_AI>().flySpeed = 0.4f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().fireRate = 5 - (statistics.wave * difficultyMultiplier);
-                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.6f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.75f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().shootTime = 3;
                     break;
                 case 3:
                     go.GetComponent<Enemy_AI>().flySpeed = 0.2f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().fireRate = 3 - (statistics.wave * difficultyMultiplier);
-                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.25f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.5f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().shootTime = 1.5f;
                     break;
             }
             Debug.Log("Enemy Type " + (rnd + 1) + "\n" +

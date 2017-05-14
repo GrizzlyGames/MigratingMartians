@@ -37,13 +37,13 @@ public class Enemy_AI : MonoBehaviour
     {
         if (canShoot)
         {
+            shootTime += Time.deltaTime;
             if (transform.position.y > clamp.GetLimitations().y)
             {
                 MoveDown();
             }
             else
-            {
-                shootTime += Time.deltaTime;
+            {                
                 if(shootTime >= fireRate && player.armour.isAlive)
                 {
                     shootTime = 0;
