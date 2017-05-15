@@ -50,7 +50,7 @@ public class Player_Manager : MonoBehaviour
     public class Weapon
     {
         public float time = 0;
-        public float fireRate = 2.5f;
+        public float fireRate = 2.75f;
         public float bulletSpeed = 5;
         public Game_Manager _game;
         public AudioSource audioSource;

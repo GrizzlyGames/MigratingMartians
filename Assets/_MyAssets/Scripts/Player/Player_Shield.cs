@@ -13,7 +13,7 @@ public class Player_Shield : MonoBehaviour
 
     private void Update()
     {
-        if (player.shield.shieldTotal <= 1.0f) // If player shield is less than full
+        if (player.shield.shieldTotal < 1.0f) // If player shield is less than full
         {
             player.shield.collider.enabled = false;
             player.shield.sprite.enabled = false;
