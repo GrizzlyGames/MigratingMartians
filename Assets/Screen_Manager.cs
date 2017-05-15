@@ -86,7 +86,10 @@ public class Screen_Manager : MonoBehaviour
                 break;
             case 3: // Game-Menu                
                 if (player.armour.isAlive)
+                {
+                    player.shield.shieldTotal = 1;
                     SetStore();
+                }                    
                 else
                     ScreenChanger(5);
                 break;
@@ -117,8 +120,8 @@ public class Screen_Manager : MonoBehaviour
 
                 wavesCompleted.text = game.statistics.wave.ToString();
                 int subtotal = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerArmourRepairs * 2500));
-                subTotal.text = subtotal.ToString("N00");
-                total.text = (subtotal * game.statistics.wave).ToString("N00");
+                subTotal.text = subtotal.ToString("C00");
+                total.text = (subtotal * game.statistics.wave).ToString("C00");
                 break;
         }
     }

@@ -17,42 +17,27 @@ public class Player_Health : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "EnemyBullet" || other.gameObject.tag == "Explosion" || other.gameObject.tag == "Enemy")
-        {            
-            if (other.gameObject.tag == "Enemy")
-                other.transform.GetComponent<Enemy_AI>().Death();
-            else
-            {
-                if (!player.shield.isActive)
-                {                    
-                    player.armour.currentArmour--;
-                    player.armour.UpdateStatsBar();
-                    int chance = Random.Range(0, 5);
-                    if (chance == 0)
-                        StartCoroutine(SpawnHealthDelay());
-                    if (player.armour.currentArmour < 1)
-                        StartCoroutine(DeathDelay());
-                }
-                else
-                {
-                    Debug.Log("Player shield.");
-                    Destroy(other.gameObject);
-                }
-            }
+        if (other.gameObject.tag == "Enemy")
+            other.transform.GetComponent<Enemy_AI>().Death();
+
+        if (other.gameObject.tag == "Explosion" || other.gameObject.tag == "EnemyBullet")
+        {
             if (other.gameObject.tag == "EnemyBullet")
                 Destroy(other.gameObject);
-        }
-    }
 
-    private IEnumerator SpawnHealthDelay()
-    {
-        float delay = Random.Range(10, 16);
-        yield return new WaitForSeconds(delay);
-        if (game.screenManager.screenIndex == 2)
-        {
-            Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-            Instantiate(health, new Vector2(Random.Range(-screenVec.x, screenVec.x), Random.Range(-screenVec.y, screenVec.y)), Quaternion.identity);
-        }        
+            if (!player.shield.isActive)
+            {
+                player.armour.currentArmour--;
+                player.armour.UpdateStatsBar();
+                if (player.armour.currentArmour < 1)
+                    StartCoroutine(DeathDelay());
+            }
+            else
+            {
+                if (player.shield.shieldTotal >= 1)
+                    player.shield.shieldTotal = 0;
+            }
+        }
     }
 
     private IEnumerator DeathDelay()

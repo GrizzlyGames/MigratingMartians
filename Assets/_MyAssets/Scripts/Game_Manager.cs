@@ -93,22 +93,26 @@ public class Game_Manager : MonoBehaviour
             switch (rnd)
             {
                 case 0:
-                    go.GetComponent<Enemy_AI>().flySpeed = 0.3f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().maxHealth = 1;
+                    go.GetComponent<Enemy_AI>().flySpeed = 1.5f + (statistics.wave * (difficultyMultiplier * 2));
                     break;
                 case 1:
-                    go.GetComponent<Enemy_AI>().flySpeed = 0.5f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().maxHealth = 2;
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.75f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().fireRate = 7 - (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().bulletSpeed = 1 + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().shootTime = 5;
                     break;
                 case 2:
-                    go.GetComponent<Enemy_AI>().flySpeed = 0.4f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().maxHealth = 2;
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.75f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().fireRate = 5 - (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().bulletSpeed = 0.75f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().shootTime = 3;
                     break;
                 case 3:
-                    go.GetComponent<Enemy_AI>().flySpeed = 0.2f + (statistics.wave * difficultyMultiplier);
+                    go.GetComponent<Enemy_AI>().maxHealth = 3;
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.5f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().fireRate = 3 - (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().bulletSpeed = 0.5f + (statistics.wave * difficultyMultiplier);
                     go.GetComponent<Enemy_AI>().shootTime = 1.5f;
@@ -133,10 +137,6 @@ public class Game_Manager : MonoBehaviour
         player.weapon.UpdateDisplay();
         player.shield.UpdateDisplay();
 
-        yield return new WaitForSeconds(2);
-        notificationText.text = "5";
-        yield return new WaitForSeconds(1);
-        notificationText.text = "4";
         yield return new WaitForSeconds(1);
         notificationText.text = "3";
         yield return new WaitForSeconds(1);
@@ -152,7 +152,7 @@ public class Game_Manager : MonoBehaviour
         SpawnEnemy();
         for (int i = 0; i < statistics.wave; i++)
         {
-            int delay = Random.Range(3, 7);
+            int delay = Random.Range(2, 6);
             yield return new WaitForSeconds(delay);
             SpawnEnemy();
         }

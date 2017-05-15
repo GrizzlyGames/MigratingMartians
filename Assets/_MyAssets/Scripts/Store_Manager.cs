@@ -20,7 +20,7 @@ public class Store_Manager : MonoBehaviour
                 if (game.statistics.money >= game.store.cannonCost && player.weapon.fireRate > 0.5f)
                 {
                     player.weapon.fireRate -= 0.25f;
-                    player.weapon.bulletSpeed += 0.5f;
+                    player.weapon.bulletSpeed += 1;
                     Debug.Log("Player weapon fireRate: " + player.weapon.fireRate);
                     Debug.Log("Player weapon bulletSpeed: " + player.weapon.bulletSpeed);
 
@@ -28,32 +28,37 @@ public class Store_Manager : MonoBehaviour
                     game.store.cannonCost *= 2;
                     game.screenManager.SetStore();
                 }
+                else
+                    Debug.Log("Player purchased all of the cannon upgrades.");
                 break;
             case 1: // Shield
-                if (game.statistics.money >= game.store.shieldCost && player.shield.duration < 5.5f)
+                if (game.statistics.money >= game.store.shieldCost && player.shield.rechargeRate >= 0.45f)
                 {
-                    player.shield.duration += 0.25f;
-                    player.shield.rechargeTime += .05f;
-                    Debug.Log("Player shield duration: " + player.shield.duration);
-                    Debug.Log("Player shield rechargeTime: " + player.shield.rechargeTime);
+
+                    player.shield.rechargeRate += .05f;
+                    Debug.Log("Player shield rechargeTime: " + player.shield.rechargeRate);
 
                     game.statistics.BankWithdrawal(game.store.shieldCost);
                     game.store.shieldCost *= 2;
                     game.screenManager.SetStore();
                 }
+                else
+                    Debug.Log("Player purchased all of the Shield upgrades.");
                 break;
             case 2: // Treads
-                if (game.statistics.money >= game.store.treadCost && player.movement.speed < 3)
+                if (game.statistics.money >= game.store.treadCost && player.movement.speed < 9)
                 {
-                    player.movement.speed += 0.25f;
+                    player.movement.speed += 0.5f;
                     Debug.Log("Player movement speed: " + player.movement.speed);
                     game.statistics.BankWithdrawal(game.store.treadCost);
                     game.store.treadCost *= 2;
                     game.screenManager.SetStore();
                 }
+                else
+                    Debug.Log("Player purchased all of the Treads upgrades.");
                 break;
             case 3: // Armour
-                if (game.statistics.money >= game.store.armourCost)
+                if (game.statistics.money >= game.store.armourCost && player.armour.maxArmour < 9)
                 {
                     player.armour.maxArmour++;
                     Debug.Log("Player armour: " + player.armour.maxArmour);
@@ -62,6 +67,8 @@ public class Store_Manager : MonoBehaviour
                     game.store.armourCost *= 2;
                     game.screenManager.SetStore();
                 }
+                else
+                    Debug.Log("Player purchased all of the Armour upgrades.");
                 break;
         }        
     }

@@ -16,7 +16,6 @@ public class Enemy_Bullet : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerPosition = GameObject.Find("Player").transform.position;
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
-        speed = game.statistics.wave * 0.25f;
     }
 
     private void Start()
@@ -39,7 +38,7 @@ public class Enemy_Bullet : MonoBehaviour
     }
 
     private void Update()
-    {        
+    {
         if (this.transform.position.y <= clamp.GetLimitations().z)
         {
             Destroy(gameObject);
@@ -55,11 +54,19 @@ public class Enemy_Bullet : MonoBehaviour
                 this.transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * Time.deltaTime);
                 break;
             case 4:
-                playerPosition = GameObject.Find("Player").transform.position;                
+                playerPosition = GameObject.Find("Player").transform.position;
                 this.transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * Time.deltaTime);
                 break;
         }
         if (this.transform.position.y <= clamp.GetLimitations().z * 0.85f)
             Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Explosion")
+        {
+            Destroy(gameObject);
+        }
     }
 }

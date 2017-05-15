@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Audio_Manager.cs" />
-    <Compile Include="Assets\Player_Shield_Button.cs" />
     <Compile Include="Assets\Screen_Manager.cs" />
     <Compile Include="Assets\Script_HealthPickUp.cs" />
     <Compile Include="Assets\Store_Button.cs" />

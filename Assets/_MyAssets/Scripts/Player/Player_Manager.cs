@@ -27,19 +27,21 @@ public class Player_Manager : MonoBehaviour
     public Movement movement = new Movement();
     public class Movement
     {
-        public float speed = 0.75f;
+        public float speed = 1f;
     }
 
-    public Health armour = new Health();
-    public class Health
+    public Armour armour = new Armour();
+    public class Armour
     {
         public bool isAlive = true;
-        public int currentArmour = 3;
-        public int maxArmour = 3;
+        public int currentArmour = 1;
+        public int maxArmour = 1;
         public Image image;
+        public Text armourHUDText;        
 
         public void UpdateStatsBar()
         {
+            armourHUDText.text = currentArmour + " / " + maxArmour;
             image.fillAmount = ((float)currentArmour / (float)maxArmour);
         }
     }
@@ -48,8 +50,8 @@ public class Player_Manager : MonoBehaviour
     public class Weapon
     {
         public float time = 0;
-        public float fireRate = 3;
-        public float bulletSpeed = 3;
+        public float fireRate = 2.5f;
+        public float bulletSpeed = 5;
         public Game_Manager _game;
         public AudioSource audioSource;
         public GameObject projectileGO;
@@ -84,17 +86,19 @@ public class Player_Manager : MonoBehaviour
     public Shield shield = new Shield();
     public class Shield
     {
-        public bool isActive = false;
-        public float duration = 3.0f;
-        public float time = 3.0f;
-        public float rechargeTime = 0.05f;
-        public CircleCollider2D collider;
+        public bool isActive = true;
+        public float shieldTotal = 1;
         public Image image;
+        public float rechargeRate = 0.05f;
+
+        public Text shieldHUDText;
+        public CircleCollider2D collider;        
         public SpriteRenderer sprite;
 
         public void UpdateDisplay()
-        {
-            float amount = ((float)time / (float)duration);
+        {            
+            float amount = ((float)shieldTotal / (float)1.0f);
+            shieldHUDText.text = amount.ToString("P00");
             image.fillAmount = amount;
             float alpha = (float)255 * (float)amount;
             sprite.color = new Color32(0, 255, 255, (byte)alpha);
@@ -103,14 +107,15 @@ public class Player_Manager : MonoBehaviour
 
     public Image healthImage;
     public Image reloadImage;
-    public Image shieldImage;
+    public Image shieldImage;    
 
     private void Start()
     {
         armour.image = healthImage;
         weapon.reloadImage = reloadImage;
         shield.image = shieldImage;
-
+        armour.armourHUDText = GameObject.Find("armourHUDText").GetComponent<Text>();
+        shield.shieldHUDText = GameObject.Find("shieldHUDText").GetComponent<Text>();
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
         weapon._game = game;
         weapon.trashCollocter = game.trashCollocter;
@@ -140,14 +145,6 @@ public class Player_Manager : MonoBehaviour
         translation *= Time.deltaTime;
         transform.position = new Vector3(this.transform.position.x + translation, this.transform.position.y, 0);
         #endregion
-    }
-
-    private void OnMouseDown()
-    {
-        if (!shield.isActive && shield.time >= shield.duration)
-        {
-            shield.isActive = true;
-        }
     }
 
     public void PlayerReset()

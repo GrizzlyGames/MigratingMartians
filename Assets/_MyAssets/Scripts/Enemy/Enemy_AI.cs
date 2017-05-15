@@ -7,7 +7,7 @@ public class Enemy_AI : MonoBehaviour
 {
     public int type;
     public int health;
-    public int maxHealth = 1;
+    public int maxHealth;
     public float flySpeed;
     public float bulletSpeed;
     public float fireRate;

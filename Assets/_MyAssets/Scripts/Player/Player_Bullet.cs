@@ -40,6 +40,9 @@ public class Player_Bullet : MonoBehaviour
                     break;
             }
         }
+        if (other.gameObject.tag == "Explosion") {
+            Destroy(gameObject);
+        }
     }
 
 }

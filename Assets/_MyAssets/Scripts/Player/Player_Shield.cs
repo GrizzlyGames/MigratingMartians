@@ -13,26 +13,19 @@ public class Player_Shield : MonoBehaviour
 
     private void Update()
     {
-        if (player.shield.isActive)
+        if (player.shield.shieldTotal <= 1.0f) // If player shield is less than full
         {
-            player.shield.sprite.enabled = true;
-            player.shield.collider.enabled = true;
-            player.shield.time -= Time.deltaTime;            
-            if (player.shield.time <= 0)
-            {
-                player.shield.isActive = false;
-                player.shield.sprite.enabled = false;
-                player.shield.collider.enabled = false;
-            }
-            player.shield.UpdateDisplay();
+            player.shield.collider.enabled = false;
+            player.shield.sprite.enabled = false;
+            player.shield.isActive = false;
+            player.shield.shieldTotal += (player.shield.rechargeRate * Time.deltaTime);
         }
         else
         {
-            if(player.shield.time < player.shield.duration)
-            {                
-                player.shield.time += Time.deltaTime * player.shield.rechargeTime;                
-            }            
-        }
+            player.shield.collider.enabled = true;
+            player.shield.sprite.enabled = true;
+            player.shield.isActive = true;
+        }            
         player.shield.UpdateDisplay();
     }
 }
