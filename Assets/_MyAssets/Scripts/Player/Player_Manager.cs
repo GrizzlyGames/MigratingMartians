@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 public class Player_Manager : MonoBehaviour
 {
+    public bool isMobile = true;
     public Game_Manager game;
 
     public GameObject projectile;
@@ -37,7 +38,7 @@ public class Player_Manager : MonoBehaviour
         public int currentArmour = 1;
         public int maxArmour = 1;
         public Image image;
-        public Text armourHUDText;        
+        public Text armourHUDText;
 
         public void UpdateStatsBar()
         {
@@ -50,7 +51,7 @@ public class Player_Manager : MonoBehaviour
     public class Weapon
     {
         public float time = 0;
-        public float fireRate = 2.75f;
+        public float fireRate = 2.2f;
         public float bulletSpeed = 5;
         public Game_Manager _game;
         public AudioSource audioSource;
@@ -73,7 +74,7 @@ public class Player_Manager : MonoBehaviour
                 audioSource.Play();
                 GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
-                bullet.transform.SetParent(trashCollocter);                
+                bullet.transform.SetParent(trashCollocter);
             }
         }
 
@@ -92,11 +93,11 @@ public class Player_Manager : MonoBehaviour
         public float rechargeRate = 0.05f;
 
         public Text shieldHUDText;
-        public CircleCollider2D collider;        
+        public CircleCollider2D collider;
         public SpriteRenderer sprite;
 
         public void UpdateDisplay()
-        {            
+        {
             float amount = ((float)shieldTotal / (float)1.0f);
             shieldHUDText.text = amount.ToString("P00");
             image.fillAmount = amount;
@@ -107,7 +108,7 @@ public class Player_Manager : MonoBehaviour
 
     public Image healthImage;
     public Image reloadImage;
-    public Image shieldImage;    
+    public Image shieldImage;
 
     private void Start()
     {
@@ -141,7 +142,13 @@ public class Player_Manager : MonoBehaviour
         }
         #endregion
         #region Movement
-        float translation = UnityEngine.Input.GetAxis("Horizontal") * movement.speed;
+        float translation;
+        if (isMobile)
+        {
+            translation = (UnityEngine.Input.acceleration.x * 2) * movement.speed;
+        }
+        else
+            translation = UnityEngine.Input.GetAxis("Horizontal") * movement.speed;
         translation *= Time.deltaTime;
         transform.position = new Vector3(this.transform.position.x + translation, this.transform.position.y, 0);
         #endregion

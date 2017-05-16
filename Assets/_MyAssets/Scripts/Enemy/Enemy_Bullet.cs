@@ -8,14 +8,12 @@ public class Enemy_Bullet : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     private ClampToScreen_Script clamp;
     private Vector3 playerPosition;
-    private Game_Manager game;
 
     void Awake()
     {
         clamp = GetComponent<ClampToScreen_Script>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerPosition = GameObject.Find("Player").transform.position;
-        game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
     }
 
     private void Start()

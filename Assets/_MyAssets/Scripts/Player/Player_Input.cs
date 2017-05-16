@@ -33,11 +33,14 @@ public class Player_Input : MonoBehaviour
             }
             if (Input.GetMouseButtonDown(1))
             {
-                player.weapon.Shoot();                
+                player.weapon.Shoot();
             }
 
             player.input.mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - Camera.main.transform.position.z));
-            player.weapon.turretTransform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((player.input.mousePosition.y - transform.position.y), (player.input.mousePosition.x - transform.position.x)) * Mathf.Rad2Deg - 90);
+            Vector3 rotation = new Vector3(0, 0, Mathf.Atan2((player.input.mousePosition.y - transform.position.y), (player.input.mousePosition.x - transform.position.x)) * Mathf.Rad2Deg - 90);
+
+            if (rotation.z < 90 && rotation.z > -90)
+                player.weapon.turretTransform.eulerAngles = rotation;
             player.input.distanceFromObject = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).magnitude;
             player.weapon.turretTransform.Translate(player.input.direction * player.input.distanceFromObject * Time.deltaTime);
         }
