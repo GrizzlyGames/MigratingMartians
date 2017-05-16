@@ -8,12 +8,20 @@ public class Screen_Manager : MonoBehaviour
     public Text HighScoreText;
 
     public Text bankText;
+    public Text cannonLevelText;
     public Text cannonCostText;
+    public Text shieldLevelText;
     public Text shieldCostText;
+    public Text treadsLevelText;
     public Text treadsCostText;
+    public Text armourLevelText;
     public Text armourCostText;
     public Text waveText;
 
+
+    public GameObject highScorePanel;
+    public Text previousHighScoreText;
+    public Text newHighScoreText;
     public Text playerBulletsFired;
     public Text playerArmourRepaires;
     public Text enemyBullet3Fired;
@@ -55,9 +63,13 @@ public class Screen_Manager : MonoBehaviour
     {
         Debug.Log("Store prices updated.");
         bankText.text = game.statistics.money.ToString("C00");
+        cannonLevelText.text = "LVL: " + (player.weapon.upgradeLevel + 1).ToString("N00") + "/10";
         cannonCostText.text = "-" + game.store.cannonCost.ToString("C00");
+        shieldLevelText.text = "LVL: " + (player.shield.upgradeLevel + 1).ToString("N00") + "/10";
         shieldCostText.text = "-" + game.store.shieldCost.ToString("C00");
+        treadsLevelText.text = "LVL: " + (player.movement.upgradeLevel + 1).ToString("N00") + "/10";
         treadsCostText.text = "-" + game.store.treadCost.ToString("C00");
+        armourLevelText.text = "LVL: " + (player.armour.upgradeLevel + 1).ToString("N00") + "/10";
         armourCostText.text = "-" + game.store.armourCost.ToString("C00");
         waveText.text = "WAVE " + game.statistics.wave.ToString();
     }
@@ -83,11 +95,7 @@ public class Screen_Manager : MonoBehaviour
                 game.statistics.wave = 1;
                 game.statistics.money = 0;
                 break;
-            case 1: // Home
-                if(PlayerPrefs.HasKey("HighScore"))
-                HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
-                else
-                    HighScoreText.text = "HIGH SCORE\n" + 0.ToString("C00");
+            case 1: // Home    
                 break;
             case 2: // Score          
                 break;
@@ -96,7 +104,7 @@ public class Screen_Manager : MonoBehaviour
                 {
                     player.shield.shieldTotal = 1;
                     SetStore();
-                }                    
+                }
                 else
                     ScreenChanger(5);
                 break;
@@ -104,7 +112,7 @@ public class Screen_Manager : MonoBehaviour
                 if (player.armour.isAlive)
                     StartCoroutine(game.WaveStart());
                 else
-                    ScreenChanger(5);                
+                    ScreenChanger(5);
                 break;
             case 5: // Game Over
                 if (Advertisement.IsReady("rewardedVideo"))
@@ -112,6 +120,7 @@ public class Screen_Manager : MonoBehaviour
                     var options = new ShowOptions { resultCallback = HandleShowResult };
                     Advertisement.Show("rewardedVideo", options);
                 }
+
                 playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();
                 playerArmourRepaires.text = game.statistics.playerArmourRepairs.ToString();
                 enemyBullet4Fired.text = game.statistics.enemyBulletType4Destroyed.ToString();
@@ -121,8 +130,8 @@ public class Screen_Manager : MonoBehaviour
                 enemyType3Killed.text = game.statistics.enemyType3Killed.ToString();
                 enemyType4Killed.text = game.statistics.enemyType4Killed.ToString();
 
-                playerBulletsFiredTotal.text = "-"+(game.statistics.playerBulletsFired * 500).ToString("C00");
-                playerArmourRepairesTotal.text = "-"+ (game.statistics.playerArmourRepairs * 2500).ToString("C00");
+                playerBulletsFiredTotal.text = "-" + (game.statistics.playerBulletsFired * 500).ToString("C00");
+                playerArmourRepairesTotal.text = "-" + (game.statistics.playerArmourRepairs * 2500).ToString("C00");
                 enemyBullet4FiredTotal.text = (game.statistics.enemyBulletType4Destroyed * 500).ToString("C00");
                 enemyBullet3FiredTotal.text = (game.statistics.enemyBulletType3Destroyed * 1500).ToString("C00");
                 enemyType1KilledTotal.text = (game.statistics.enemyType1Killed * 10000).ToString("C00");
@@ -139,10 +148,27 @@ public class Screen_Manager : MonoBehaviour
                 if (PlayerPrefs.HasKey("HighScore"))
                 {
                     if (_total > PlayerPrefs.GetInt("HighScore"))
+                    {
+                        highScorePanel.SetActive(true);
+                        previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                        newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
                         PlayerPrefs.SetInt("HighScore", _total);
+                        HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                    }
+                    else
+                    {
+                        HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                        highScorePanel.SetActive(false);
+                    }                        
                 }
                 else
+                {
+                    highScorePanel.SetActive(true);
+                    previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                    newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
                     PlayerPrefs.SetInt("HighScore", _total);
+                    HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                }
                 break;
         }
     }

@@ -29,6 +29,7 @@ public class Player_Manager : MonoBehaviour
     public class Movement
     {
         public float speed;
+        public int upgradeLevel = 0;
     }
 
     public Armour armour = new Armour();
@@ -37,6 +38,7 @@ public class Player_Manager : MonoBehaviour
         public bool isAlive = true;
         public int currentArmour = 1;
         public int maxArmour = 1;
+        public int upgradeLevel = 0;
         public Image image;
         public Text armourHUDText;
 
@@ -53,6 +55,7 @@ public class Player_Manager : MonoBehaviour
         public float time;
         public float fireRate;
         public float bulletSpeed;
+        public int upgradeLevel = 0;
         public Game_Manager _game;
         public AudioSource audioSource;
         public GameObject projectileGO;
@@ -88,10 +91,11 @@ public class Player_Manager : MonoBehaviour
     public class Shield
     {
         public bool isActive;
-        public float shieldTotal;
-        public Image image;
+        public float shieldTotal;        
         public float rechargeRate;
+        public int upgradeLevel = 0;
 
+        public Image image;
         public Text shieldHUDText;
         public CircleCollider2D collider;
         public SpriteRenderer sprite;
@@ -130,7 +134,7 @@ public class Player_Manager : MonoBehaviour
     private void Update()
     {
         #region Weapon
-        if (!weapon.canShoot && game.statistics.waveStart)
+        if (!weapon.canShoot)
         {
             weapon.time += Time.deltaTime;
             weapon.UpdateDisplay();
