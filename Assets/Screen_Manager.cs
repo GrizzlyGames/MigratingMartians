@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 public class Screen_Manager : MonoBehaviour
 {
     public Text HighScoreText;
@@ -106,6 +107,11 @@ public class Screen_Manager : MonoBehaviour
                     ScreenChanger(5);                
                 break;
             case 5: // Game Over
+                if (Advertisement.IsReady("rewardedVideo"))
+                {
+                    var options = new ShowOptions { resultCallback = HandleShowResult };
+                    Advertisement.Show("rewardedVideo", options);
+                }
                 playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();
                 playerArmourRepaires.text = game.statistics.playerArmourRepairs.ToString();
                 enemyBullet4Fired.text = game.statistics.enemyBulletType4Destroyed.ToString();
@@ -137,6 +143,25 @@ public class Screen_Manager : MonoBehaviour
                 }
                 else
                     PlayerPrefs.SetInt("HighScore", _total);
+                break;
+        }
+    }
+
+    private void HandleShowResult(ShowResult result)
+    {
+        switch (result)
+        {
+            case ShowResult.Finished:
+                Debug.Log("The ad was successfully shown.");
+                //
+                // YOUR CODE TO REWARD THE GAMER
+                // Give coins etc.
+                break;
+            case ShowResult.Skipped:
+                Debug.Log("The ad was skipped before reaching the end.");
+                break;
+            case ShowResult.Failed:
+                Debug.LogError("The ad failed to be shown.");
                 break;
         }
     }
