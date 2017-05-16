@@ -12,10 +12,9 @@ public class Game_Manager : MonoBehaviour
     public Player_Manager player;
     public Screen_Manager screenManager;
 
-
     public Statistics statistics = new Statistics();
     public class Statistics
-    {
+    {        
         public bool waveStart = false;
         public int wave = 1;
         public int money = 0;
@@ -132,11 +131,7 @@ public class Game_Manager : MonoBehaviour
         yield return new WaitForSeconds(0.01f);
         statistics.enemiesSpawned = 0;
         statistics.enemiesKilled = 0;
-        player.PlayerReset();
-        player.armour.UpdateStatsBar();
-        player.weapon.UpdateDisplay();
-        player.shield.UpdateDisplay();
-
+        player.WaveReset();
         yield return new WaitForSeconds(1);
         notificationText.text = "3";
         yield return new WaitForSeconds(1);

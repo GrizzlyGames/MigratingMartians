@@ -25,10 +25,10 @@ public class Player_Health : MonoBehaviour
             if (other.gameObject.tag == "EnemyBullet")
                 Destroy(other.gameObject);
 
-            if (!player.shield.isActive)
+            if (!player.shield.isActive && player.armour.currentArmour > 0)
             {
                 player.armour.currentArmour--;
-                player.armour.UpdateStatsBar();
+                player.armour.UpdateDisplay();
                 if (player.armour.currentArmour < 1)
                     StartCoroutine(DeathDelay());
             }

@@ -28,7 +28,7 @@ public class Player_Manager : MonoBehaviour
     public Movement movement = new Movement();
     public class Movement
     {
-        public float speed = 1f;
+        public float speed;
     }
 
     public Armour armour = new Armour();
@@ -40,7 +40,7 @@ public class Player_Manager : MonoBehaviour
         public Image image;
         public Text armourHUDText;
 
-        public void UpdateStatsBar()
+        public void UpdateDisplay()
         {
             armourHUDText.text = currentArmour + " / " + maxArmour;
             image.fillAmount = ((float)currentArmour / (float)maxArmour);
@@ -50,9 +50,9 @@ public class Player_Manager : MonoBehaviour
     public Weapon weapon = new Weapon();
     public class Weapon
     {
-        public float time = 0;
-        public float fireRate = 2.2f;
-        public float bulletSpeed = 5;
+        public float time;
+        public float fireRate;
+        public float bulletSpeed;
         public Game_Manager _game;
         public AudioSource audioSource;
         public GameObject projectileGO;
@@ -87,10 +87,10 @@ public class Player_Manager : MonoBehaviour
     public Shield shield = new Shield();
     public class Shield
     {
-        public bool isActive = true;
-        public float shieldTotal = 1;
+        public bool isActive;
+        public float shieldTotal;
         public Image image;
-        public float rechargeRate = 0.05f;
+        public float rechargeRate;
 
         public Text shieldHUDText;
         public CircleCollider2D collider;
@@ -153,8 +153,23 @@ public class Player_Manager : MonoBehaviour
         transform.position = new Vector3(this.transform.position.x + translation, this.transform.position.y, 0);
         #endregion
     }
+    public void SetVariables()
+    {
+        movement.speed = 1;
+        
+        armour.isAlive = true;
+        armour.maxArmour = 1;
+        armour.currentArmour = armour.maxArmour;
 
-    public void PlayerReset()
+        weapon.time = 0;
+        weapon.fireRate = 2.2f;
+        weapon.bulletSpeed = 5;
+
+        shield.isActive = true;
+        shield.shieldTotal = 1;
+        shield.rechargeRate = 0.05f;
+    }
+    public void WaveReset()
     {
         int armourRepaired = armour.maxArmour - armour.currentArmour;
         Debug.Log("Armour repaired " + armourRepaired);
@@ -165,5 +180,9 @@ public class Player_Manager : MonoBehaviour
         weapon.time = weapon.fireRate;
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(1).gameObject.SetActive(true);
+
+        armour.UpdateDisplay();
+        shield.UpdateDisplay();
+        weapon.UpdateDisplay();
     }
 }

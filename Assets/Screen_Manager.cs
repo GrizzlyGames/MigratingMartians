@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Screen_Manager : MonoBehaviour
 {
+    public Text HighScoreText;
+
     public Text bankText;
     public Text cannonCostText;
     public Text shieldCostText;
@@ -76,11 +78,15 @@ public class Screen_Manager : MonoBehaviour
         switch (screenIndex)
         {
             case 0: // Splash
-                player.PlayerReset();
+                player.SetVariables();
                 game.statistics.wave = 1;
                 game.statistics.money = 0;
                 break;
-            case 1: // Home                
+            case 1: // Home
+                if(PlayerPrefs.HasKey("HighScore"))
+                HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                else
+                    HighScoreText.text = "HIGH SCORE\n" + 0.ToString("C00");
                 break;
             case 2: // Score          
                 break;
@@ -121,7 +127,16 @@ public class Screen_Manager : MonoBehaviour
                 wavesCompleted.text = game.statistics.wave.ToString();
                 int subtotal = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerArmourRepairs * 2500));
                 subTotal.text = subtotal.ToString("C00");
-                total.text = (subtotal * game.statistics.wave).ToString("C00");
+                int _total = subtotal * game.statistics.wave;
+                total.text = _total.ToString("C00");
+
+                if (PlayerPrefs.HasKey("HighScore"))
+                {
+                    if (_total > PlayerPrefs.GetInt("HighScore"))
+                        PlayerPrefs.SetInt("HighScore", _total);
+                }
+                else
+                    PlayerPrefs.SetInt("HighScore", _total);
                 break;
         }
     }
