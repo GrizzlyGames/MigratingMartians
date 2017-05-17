@@ -84,10 +84,6 @@ public class Screen_Manager : MonoBehaviour
             else
                 sceenGO[i].SetActive(false);
         }
-        foreach (Transform child in game.trashCollocter)
-        {
-            Destroy(child.gameObject);
-        }
         switch (screenIndex)
         {
             case 0: // Splash
@@ -100,6 +96,10 @@ public class Screen_Manager : MonoBehaviour
             case 2: // Score          
                 break;
             case 3: // Game-Menu                
+                foreach (Transform child in game.trashCollocter)
+                {
+                    Destroy(child.gameObject);
+                }
                 if (player.armour.isAlive)
                 {
                     player.shield.shieldTotal = 1;
@@ -110,7 +110,9 @@ public class Screen_Manager : MonoBehaviour
                 break;
             case 4: // Gameplay
                 if (player.armour.isAlive)
+                {
                     StartCoroutine(game.WaveStart());
+                }
                 else
                     ScreenChanger(5);
                 break;
@@ -120,7 +122,10 @@ public class Screen_Manager : MonoBehaviour
                     var options = new ShowOptions { resultCallback = HandleShowResult };
                     Advertisement.Show("rewardedVideo", options);
                 }
-
+                foreach (Transform child in game.trashCollocter)
+                {
+                    Destroy(child.gameObject);
+                }
                 playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();
                 playerArmourRepaires.text = game.statistics.playerArmourRepairs.ToString();
                 enemyBullet4Fired.text = game.statistics.enemyBulletType4Destroyed.ToString();
@@ -159,7 +164,7 @@ public class Screen_Manager : MonoBehaviour
                     {
                         HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                         highScorePanel.SetActive(false);
-                    }                        
+                    }
                 }
                 else
                 {
