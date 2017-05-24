@@ -9,7 +9,8 @@ public class Player_Manager : MonoBehaviour
     public bool isMobile = true;
     public Game_Manager game;
 
-    public GameObject projectile;
+    public GameObject normalBulletGO;
+    public GameObject specialBulletGO;
 
     public Input input = new Input();
     public class Input
@@ -59,24 +60,41 @@ public class Player_Manager : MonoBehaviour
         public Game_Manager _game;
         public AudioSource audioSource;
         public GameObject projectileGO;
+        public GameObject specialBullet;
         public Transform trashCollocter;
         public Transform spawnTransform;
         public Transform turretTransform;
-        public bool canShoot;
+        public bool canShootNormal = true;
+        public bool canShootSpecial = true;
         public Image reloadImage;
         public Image bulletImage;
 
         public void Shoot()
         {
-            if (canShoot)
+            if (canShootNormal)
             {
                 _game.statistics.playerBulletsFired++;
                 _game.statistics.money -= 500;
-                canShoot = false;
+                canShootNormal = false;
                 reloadImage.fillAmount = 0;
                 audioSource.Play();
                 GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
+                bullet.transform.SetParent(trashCollocter);
+            }
+        }
+
+        public void SpecialShot()
+        {
+            if (canShootSpecial)
+            {
+                _game.statistics.playerSpecialBulletsFired++;
+                _game.statistics.money -= 2500;
+                canShootSpecial = false;
+                reloadImage.fillAmount = 0;
+                audioSource.Play();
+                GameObject bullet = Instantiate(specialBullet, spawnTransform.position, spawnTransform.rotation) as GameObject;
+                bullet.GetComponent<Player_Bullet>().speed = bulletSpeed * 2;
                 bullet.transform.SetParent(trashCollocter);
             }
         }
@@ -123,24 +141,25 @@ public class Player_Manager : MonoBehaviour
         shield.shieldHUDText = GameObject.Find("shieldHUDText").GetComponent<Text>();
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
         weapon._game = game;
+        weapon.specialBullet = specialBulletGO;
         weapon.trashCollocter = game.trashCollocter;
         weapon.audioSource = GetComponent<AudioSource>();
         weapon.turretTransform = transform.GetChild(0).GetChild(0);
         weapon.spawnTransform = weapon.turretTransform.GetChild(0);
-        weapon.projectileGO = projectile;
+        weapon.projectileGO = normalBulletGO;
         shield.sprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
         shield.collider = transform.GetChild(1).GetComponent<CircleCollider2D>();
     }
     private void Update()
     {
         #region Weapon
-        if (!weapon.canShoot)
+        if (!weapon.canShootNormal)
         {
             weapon.time += Time.deltaTime;
             weapon.UpdateDisplay();
             if (weapon.time >= weapon.fireRate)
             {
-                weapon.canShoot = true;
+                weapon.canShootNormal = true;
                 weapon.time = 0;
             }
         }
@@ -153,6 +172,7 @@ public class Player_Manager : MonoBehaviour
         }
         else
             translation = UnityEngine.Input.GetAxis("Horizontal") * movement.speed;
+
         translation *= Time.deltaTime;
         transform.position = new Vector3(this.transform.position.x + translation, this.transform.position.y, 0);
         #endregion

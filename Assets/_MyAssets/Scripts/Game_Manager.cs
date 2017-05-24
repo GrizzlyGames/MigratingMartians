@@ -22,6 +22,7 @@ public class Game_Manager : MonoBehaviour
         public int enemiesKilled = 0;
 
         public int playerBulletsFired = 0;
+        public int playerSpecialBulletsFired = 0;
         public int playerArmourRepairs = 0;
         public int enemyBulletType3Destroyed = 0;
         public int enemyBulletType4Destroyed = 0;
@@ -36,7 +37,6 @@ public class Game_Manager : MonoBehaviour
             Debug.Log("Bank Deposit: " + amt + "\n" +
                       "Bank Total: " + money);
         }
-
         public void BankWithdrawal(int amt)
         {
             money -= amt;
