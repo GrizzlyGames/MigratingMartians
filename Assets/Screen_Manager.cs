@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.Advertisements;
 public class Screen_Manager : MonoBehaviour
 {
-    public Text HighScoreText;
-
     public Text bankText;
     public Text cannonLevelText;
     public Text cannonCostText;
@@ -31,8 +29,6 @@ public class Screen_Manager : MonoBehaviour
     public Text enemyType3Killed;
     public Text enemyType4Killed;
 
-    public Text wavesCompleted;
-    public Text subTotal;
     public Text total;
 
     public Text playerBulletsFiredTotal;
@@ -144,10 +140,7 @@ public class Screen_Manager : MonoBehaviour
                 enemyType3KilledTotal.text = (game.statistics.enemyType3Killed * 25000).ToString("C00");
                 enemyType4KilledTotal.text = (game.statistics.enemyType4Killed * 30000).ToString("C00");
 
-                wavesCompleted.text = game.statistics.wave.ToString();
-                int subtotal = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerArmourRepairs * 2500));
-                subTotal.text = subtotal.ToString("C00");
-                int _total = subtotal * game.statistics.wave;
+                int _total = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerArmourRepairs * 2500));
                 total.text = _total.ToString("C00");
 
                 if (PlayerPrefs.HasKey("HighScore"))
@@ -157,12 +150,10 @@ public class Screen_Manager : MonoBehaviour
                         highScorePanel.SetActive(true);
                         previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                         newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                        PlayerPrefs.SetInt("HighScore", _total);
-                        HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                        PlayerPrefs.SetInt("HighScore", _total);                        
                     }
                     else
-                    {
-                        HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                    {                        
                         highScorePanel.SetActive(false);
                     }
                 }
@@ -171,8 +162,7 @@ public class Screen_Manager : MonoBehaviour
                     highScorePanel.SetActive(true);
                     previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                     newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                    PlayerPrefs.SetInt("HighScore", _total);
-                    HighScoreText.text = "HIGH SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                    PlayerPrefs.SetInt("HighScore", _total);                    
                 }
                 break;
         }
