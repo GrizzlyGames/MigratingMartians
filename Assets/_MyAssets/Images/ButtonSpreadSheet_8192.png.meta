@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 47a879f54be0cdd49908604ff94dd612
-timeCreated: 1495924887
+timeCreated: 1495963583
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -10,6 +10,13 @@ TextureImporter:
     21300006: Button-Menu
     21300008: Panel-Red-Small
     21300010: Panel-Red-Bold
+    21300012: ButtonSpreadSheet_8192_0
+    21300014: ButtonSpreadSheet_8192_1
+    21300016: ButtonSpreadSheet_8192_2
+    21300018: ButtonSpreadSheet_8192_3
+    21300020: ButtonSpreadSheet_8192_4
+    21300022: ButtonSpreadSheet_8192_5
+    21300024: ButtonSpreadSheet_8192_6
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -92,7 +99,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Panel-Grey
+      name: ButtonSpreadSheet_8192_0
       rect:
         serializedVersion: 2
         x: 326
@@ -105,7 +112,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Panel-Red
+      name: ButtonSpreadSheet_8192_1
       rect:
         serializedVersion: 2
         x: 3046
@@ -118,7 +125,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button-Store
+      name: ButtonSpreadSheet_8192_2
       rect:
         serializedVersion: 2
         x: 5898
@@ -131,7 +138,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Button-Menu
+      name: ButtonSpreadSheet_8192_3
       rect:
         serializedVersion: 2
         x: 50
@@ -144,7 +151,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Panel-Red-Small
+      name: ButtonSpreadSheet_8192_4
       rect:
         serializedVersion: 2
         x: 2770
@@ -157,13 +164,26 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Panel-Red-Bold
+      name: ButtonSpreadSheet_8192_5
       rect:
         serializedVersion: 2
         x: 5754
         y: 2782
         width: 2263
         height: 2644
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ButtonSpreadSheet_8192_6
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 1978
+        width: 2322
+        height: 1084
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

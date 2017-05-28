@@ -6,6 +6,7 @@ public class Store_Manager : MonoBehaviour
 {
     private Game_Manager game;
     public Player_Manager player;
+    public Screen_Manager screen;
 
     private void Start()
     {
@@ -21,8 +22,10 @@ public class Store_Manager : MonoBehaviour
                 {
                     player.weapon.upgradeLevel++;
                     if(player.weapon.upgradeLevel == 5)
-                        player.weapon.upgradeLevel++;
-                    player.weapon.fireRate -= 0.2f;
+                    {
+                        screen.turretCostText.text = "SOLD";
+                    }
+                    player.weapon.fireRate -= 0.3f;
                     player.weapon.bulletSpeed += 1;
                     Debug.Log("Player weapon fireRate: " + player.weapon.fireRate);
                     Debug.Log("Player weapon bulletSpeed: " + player.weapon.bulletSpeed);
@@ -39,7 +42,9 @@ public class Store_Manager : MonoBehaviour
                 {
                     player.shield.upgradeLevel++;
                     if (player.shield.upgradeLevel == 5)
-                        player.shield.upgradeLevel++;
+                    {
+                        screen.shieldCostText.text = "SOLD";
+                    }
                     player.shield.rechargeRate += .025f;
                     Debug.Log("Player shield rechargeTime: " + player.shield.rechargeRate);
 
@@ -53,7 +58,9 @@ public class Store_Manager : MonoBehaviour
                 {
                     player.movement.upgradeLevel++;
                     if (player.movement.upgradeLevel == 5)
-                        player.movement.upgradeLevel++;
+                    {
+                        screen.treadCostText.text = "SOLD";
+                    }
                     player.movement.speed += 0.5f;
                     Debug.Log("Player movement speed: " + player.movement.speed);
                     game.statistics.BankWithdrawal(game.store.treadCost);
@@ -66,7 +73,9 @@ public class Store_Manager : MonoBehaviour
                 {
                     player.armour.upgradeLevel++;
                     if (player.armour.upgradeLevel == 5)
-                        player.armour.upgradeLevel++;
+                    {
+                        screen.armourCostText.text = "SOLD";
+                    }
                     player.armour.maxArmour++;
                     Debug.Log("Player armour: " + player.armour.maxArmour);
                     player.armour.currentArmour = player.armour.maxArmour;

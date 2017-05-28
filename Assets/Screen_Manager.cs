@@ -138,7 +138,11 @@ public class Screen_Manager : MonoBehaviour
             case 0: // Splash
                 player.SetVariables();
                 game.statistics.wave = 1;
-                game.statistics.money = 0;
+                game.statistics.money = 10000000;
+                player.weapon.upgradeLevel = 0;
+                player.movement.upgradeLevel = 0;
+                player.armour.upgradeLevel = 0;
+                player.shield.upgradeLevel = 0;
                 break;
             case 1: // Home    
                 break;
@@ -161,25 +165,26 @@ public class Screen_Manager : MonoBehaviour
                 if (player.armour.isAlive)
                 {
                     Debug.Log("weapon.upgradeLevel" + player.weapon.upgradeLevel);
-                    if(player.weapon.upgradeLevel < 5)
+
+                    if (player.weapon.upgradeLevel <= 5)
                     playerTurretRenderer.sprite = playerTurretSprite[player.weapon.upgradeLevel];
                     else
-                        playerTurretRenderer.sprite = playerTurretSprite[5];
-                    
-                    if (player.weapon.upgradeLevel < 5)
+                        player.weapon.upgradeLevel = 5;
+
+                    if (player.shield.upgradeLevel <= 5)
                         playerShieldRenderer.sprite = playerShieldSprite[player.shield.upgradeLevel];
                     else
-                        playerShieldRenderer.sprite = playerShieldSprite[5];
-                   
-                    if (player.weapon.upgradeLevel < 5)
+                        player.shield.upgradeLevel = 5;
+
+                    if (player.movement.upgradeLevel <= 5)
                         playerTreadsRenderer.sprite = playerTreadsSprite[player.movement.upgradeLevel];
                     else
-                        playerTreadsRenderer.sprite = playerTreadsSprite[5];
-                                        
-                    if (player.weapon.upgradeLevel < 5)
+                        player.movement.upgradeLevel = 5;
+
+                    if (player.armour.upgradeLevel <= 5)
                         playerArmourRenderer.sprite = playerArmourSprite[player.armour.upgradeLevel];
                     else
-                        playerArmourRenderer.sprite = playerArmourSprite[5];
+                        player.armour.upgradeLevel = 5;
 
                     StartCoroutine(game.WaveStart());
                 }
