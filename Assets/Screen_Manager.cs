@@ -6,12 +6,12 @@ using UnityEngine.Advertisements;
 public class Screen_Manager : MonoBehaviour
 {
     public Text bankText;
-    public Text cannonLevelText;
-    public Text cannonCostText;
+    public Text turretLevelText;
+    public Text turretCostText;
     public Text shieldLevelText;
     public Text shieldCostText;
-    public Text treadsLevelText;
-    public Text treadsCostText;
+    public Text treadLevelText;
+    public Text treadCostText;
     public Text armourLevelText;
     public Text armourCostText;
     public Text waveText;
@@ -42,6 +42,22 @@ public class Screen_Manager : MonoBehaviour
 
     public GameObject notificationGO;
 
+    public Image playerTreadsImage;
+    public SpriteRenderer playerTreadsRenderer;
+    public Sprite[] playerTreadsSprite;
+
+    public SpriteRenderer playerArmourRenderer;
+    public Image playerArmourImage;
+    public Sprite[] playerArmourSprite;
+
+    public SpriteRenderer playerShieldRenderer;
+    public Image playerShieldImage;
+    public Sprite[] playerShieldSprite;
+
+    public SpriteRenderer playerTurretRenderer;
+    public Image playerTurretImage;
+    public Sprite[] playerTurretSprite;
+
     public int screenIndex;
     public GameObject[] sceenGO;
 
@@ -59,14 +75,51 @@ public class Screen_Manager : MonoBehaviour
     {
         Debug.Log("Store prices updated.");
         bankText.text = game.statistics.money.ToString("C00");
-        cannonLevelText.text = "LVL: " + (player.weapon.upgradeLevel + 1).ToString("N00") + "/10";
-        cannonCostText.text = "-" + game.store.cannonCost.ToString("C00");
-        shieldLevelText.text = "LVL: " + (player.shield.upgradeLevel + 1).ToString("N00") + "/10";
-        shieldCostText.text = "-" + game.store.shieldCost.ToString("C00");
-        treadsLevelText.text = "LVL: " + (player.movement.upgradeLevel + 1).ToString("N00") + "/10";
-        treadsCostText.text = "-" + game.store.treadCost.ToString("C00");
-        armourLevelText.text = "LVL: " + (player.armour.upgradeLevel + 1).ToString("N00") + "/10";
-        armourCostText.text = "-" + game.store.armourCost.ToString("C00");
+        if (player.weapon.upgradeLevel < 5)
+        {
+            turretLevelText.text = "LVL: " + (player.weapon.upgradeLevel + 1).ToString("N00") + "/5";
+            playerTurretImage.sprite = playerTurretSprite[player.weapon.upgradeLevel + 1];
+            turretCostText.text = "-" + game.store.cannonCost.ToString("C00");
+        }
+        else
+        {
+            turretCostText.text = "SOLD";
+        }
+
+        if (player.shield.upgradeLevel < 5)
+        {
+            shieldLevelText.text = "LVL: " + (player.shield.upgradeLevel + 1).ToString("N00") + "/5";
+            playerShieldImage.sprite = playerShieldSprite[player.shield.upgradeLevel + 1];
+            shieldCostText.text = "-" + game.store.shieldCost.ToString("C00");
+        }
+        else
+        {
+            shieldCostText.text = "SOLD";
+        }
+
+        Debug.Log("Tread upgrade level: " + player.movement.upgradeLevel);
+        if (player.movement.upgradeLevel < 5)
+        {
+            treadLevelText.text = "LVL: " + (player.movement.upgradeLevel + 1).ToString("N00") + "/5";
+            playerTreadsImage.sprite = playerTreadsSprite[player.movement.upgradeLevel + 1];
+            treadCostText.text = "-" + game.store.treadCost.ToString("C00");
+        }
+        else
+        {
+            treadCostText.text = "SOLD";
+        }
+
+        if (player.armour.upgradeLevel < 5)
+        {
+            armourLevelText.text = "LVL: " + (player.armour.upgradeLevel + 1).ToString("N00") + "/5";
+            playerArmourImage.sprite = playerArmourSprite[player.armour.upgradeLevel + 1];
+            armourCostText.text = "-" + game.store.armourCost.ToString("C00");
+        }
+        else
+        {
+            armourCostText.text = "SOLD";
+        }
+
         waveText.text = "WAVE " + game.statistics.wave.ToString();
     }
     public void ScreenChanger(int index)
@@ -91,7 +144,7 @@ public class Screen_Manager : MonoBehaviour
                 break;
             case 2: // Score          
                 break;
-            case 3: // Game-Menu                
+            case 3: // Game-Menu                   
                 foreach (Transform child in game.trashCollocter)
                 {
                     Destroy(child.gameObject);
@@ -107,6 +160,27 @@ public class Screen_Manager : MonoBehaviour
             case 4: // Gameplay
                 if (player.armour.isAlive)
                 {
+                    Debug.Log("weapon.upgradeLevel" + player.weapon.upgradeLevel);
+                    if(player.weapon.upgradeLevel < 5)
+                    playerTurretRenderer.sprite = playerTurretSprite[player.weapon.upgradeLevel];
+                    else
+                        playerTurretRenderer.sprite = playerTurretSprite[5];
+                    
+                    if (player.weapon.upgradeLevel < 5)
+                        playerShieldRenderer.sprite = playerShieldSprite[player.shield.upgradeLevel];
+                    else
+                        playerShieldRenderer.sprite = playerShieldSprite[5];
+                   
+                    if (player.weapon.upgradeLevel < 5)
+                        playerTreadsRenderer.sprite = playerTreadsSprite[player.movement.upgradeLevel];
+                    else
+                        playerTreadsRenderer.sprite = playerTreadsSprite[5];
+                                        
+                    if (player.weapon.upgradeLevel < 5)
+                        playerArmourRenderer.sprite = playerArmourSprite[player.armour.upgradeLevel];
+                    else
+                        playerArmourRenderer.sprite = playerArmourSprite[5];
+
                     StartCoroutine(game.WaveStart());
                 }
                 else
@@ -150,10 +224,10 @@ public class Screen_Manager : MonoBehaviour
                         highScorePanel.SetActive(true);
                         previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                         newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                        PlayerPrefs.SetInt("HighScore", _total);                        
+                        PlayerPrefs.SetInt("HighScore", _total);
                     }
                     else
-                    {                        
+                    {
                         highScorePanel.SetActive(false);
                     }
                 }
@@ -162,7 +236,7 @@ public class Screen_Manager : MonoBehaviour
                     highScorePanel.SetActive(true);
                     previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                     newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                    PlayerPrefs.SetInt("HighScore", _total);                    
+                    PlayerPrefs.SetInt("HighScore", _total);
                 }
                 break;
         }

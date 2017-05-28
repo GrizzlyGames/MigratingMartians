@@ -1,0 +1,428 @@
+fileFormatVersion: 2
+guid: 65bf867cbdd156f4682a307bbde6f02c
+timeCreated: 1495938493
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Tank-1-Tread
+    21300002: Tank-2-Tread
+    21300004: Tank-3-Tread
+    21300006: Tank-4-Tread
+    21300008: Tank-5-Tread
+    21300010: Tank-6-Tread
+    21300012: Tank-1-Turret
+    21300014: Tank-2-Turret
+    21300016: Tank-3-Turret
+    21300018: Tank-4-Turret
+    21300020: Tank-5-Turret
+    21300022: Tank-6-Turret
+    21300024: Tank-1-Shield
+    21300026: Tank-2-Shield
+    21300028: Tank-3-Shield
+    21300030: Tank-4-Shield
+    21300032: Tank-5-Shield
+    21300034: Tank-6-Shield
+    21300036: Tank-1-Armour
+    21300038: Tank-2-Armour
+    21300040: Tank-3-Armour
+    21300042: Tank-4-Armour
+    21300044: Tank-5-Armour
+    21300046: Tank-6-Armour
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 350
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tank-1-Tread
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 3597
+        width: 599
+        height: 234
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-2-Tread
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 3585
+        width: 620
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-3-Tread
+      rect:
+        serializedVersion: 2
+        x: 1407
+        y: 3613
+        width: 610
+        height: 214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-4-Tread
+      rect:
+        serializedVersion: 2
+        x: 2123
+        y: 3595
+        width: 584
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-5-Tread
+      rect:
+        serializedVersion: 2
+        x: 2761
+        y: 3621
+        width: 624
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-6-Tread
+      rect:
+        serializedVersion: 2
+        x: 3435
+        y: 3596
+        width: 638
+        height: 231
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-1-Turret
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 3019
+        width: 484
+        height: 134
+      alignment: 9
+      pivot: {x: 0.6, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-2-Turret
+      rect:
+        serializedVersion: 2
+        x: 751
+        y: 2979
+        width: 506
+        height: 196
+      alignment: 9
+      pivot: {x: 0.6, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-3-Turret
+      rect:
+        serializedVersion: 2
+        x: 1478
+        y: 3004
+        width: 486
+        height: 154
+      alignment: 9
+      pivot: {x: 0.6, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-4-Turret
+      rect:
+        serializedVersion: 2
+        x: 2165
+        y: 2991
+        width: 483
+        height: 130
+      alignment: 9
+      pivot: {x: 0.6, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-5-Turret
+      rect:
+        serializedVersion: 2
+        x: 2847
+        y: 2977
+        width: 480
+        height: 176
+      alignment: 9
+      pivot: {x: 0.6, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-6-Turret
+      rect:
+        serializedVersion: 2
+        x: 3513
+        y: 2992
+        width: 496
+        height: 145
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-1-Shield
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 2307
+        width: 412
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-2-Shield
+      rect:
+        serializedVersion: 2
+        x: 785
+        y: 2311
+        width: 468
+        height: 201
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-3-Shield
+      rect:
+        serializedVersion: 2
+        x: 1457
+        y: 2289
+        width: 470
+        height: 152
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-4-Shield
+      rect:
+        serializedVersion: 2
+        x: 2165
+        y: 2295
+        width: 406
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-5-Shield
+      rect:
+        serializedVersion: 2
+        x: 2855
+        y: 2309
+        width: 424
+        height: 139
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-6-Shield
+      rect:
+        serializedVersion: 2
+        x: 3621
+        y: 2301
+        width: 310
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-1-Armour
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 1631
+        width: 608
+        height: 184
+      alignment: 9
+      pivot: {x: 0.5, y: 0.35}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-2-Armour
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 1605
+        width: 668
+        height: 206
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-3-Armour
+      rect:
+        serializedVersion: 2
+        x: 1401
+        y: 1585
+        width: 586
+        height: 196
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-4-Armour
+      rect:
+        serializedVersion: 2
+        x: 2135
+        y: 1600
+        width: 512
+        height: 169
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-5-Armour
+      rect:
+        serializedVersion: 2
+        x: 2781
+        y: 1629
+        width: 580
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tank-6-Armour
+      rect:
+        serializedVersion: 2
+        x: 3491
+        y: 1621
+        width: 552
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

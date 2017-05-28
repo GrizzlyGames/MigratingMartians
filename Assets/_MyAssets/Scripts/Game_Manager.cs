@@ -16,8 +16,8 @@ public class Game_Manager : MonoBehaviour
     public class Statistics
     {        
         public bool waveStart = false;
-        public int wave = 1;
-        public int money = 0;
+        public int wave;
+        public int money;
         public int enemiesSpawned = 0;
         public int enemiesKilled = 0;
 

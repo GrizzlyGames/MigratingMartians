@@ -145,7 +145,7 @@ public class Player_Manager : MonoBehaviour
         weapon.trashCollocter = game.trashCollocter;
         weapon.audioSource = GetComponent<AudioSource>();
         weapon.turretTransform = transform.GetChild(0).GetChild(0);
-        weapon.spawnTransform = weapon.turretTransform.GetChild(0);
+        weapon.spawnTransform = weapon.turretTransform.GetChild(0).GetChild(0);
         weapon.projectileGO = normalBulletGO;
         shield.sprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
         shield.collider = transform.GetChild(1).GetComponent<CircleCollider2D>();
