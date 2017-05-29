@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Advertisements;
 public class Screen_Manager : MonoBehaviour
 {
+    public Text gameTimeText;
     public Text bankText;
     public Text turretLevelText;
     public Text turretCostText;
@@ -16,7 +17,7 @@ public class Screen_Manager : MonoBehaviour
     public Text armourCostText;
     public Text waveText;
 
-
+    public GameObject deathDetails;
     public GameObject highScorePanel;
     public Text previousHighScoreText;
     public Text newHighScoreText;
@@ -39,6 +40,11 @@ public class Screen_Manager : MonoBehaviour
     public Text enemyType2KilledTotal;
     public Text enemyType3KilledTotal;
     public Text enemyType4KilledTotal;
+
+    public Text highWave;
+    public Text highScore;
+    public Text lastScore;
+    public Text lastWave;
 
     public GameObject notificationGO;
 
@@ -69,6 +75,103 @@ public class Screen_Manager : MonoBehaviour
     {
         game = GetComponent<Game_Manager>();
         ScreenChanger(screenIndex);
+    }
+    private float waveTime;
+    private float spawnTimer;
+    private float rndDelay;
+    private void Update()
+    {
+        if (screenIndex == 4)
+        {
+            if (player.armour.isAlive && game.statistics.gameStarted)
+            {
+                if (!game.statistics.waveComplete) // Game running
+                {
+                    if (game.statistics.waveCompletePending) // Waiting to exit
+                    {
+                        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1 && GameObject.FindGameObjectsWithTag("EnemyBullet").Length < 1)
+                        {
+                            game.statistics.waveComplete = true;
+                            waveTime = 0;
+                            StartCoroutine(game.WaveCompleteDelay());
+                        }
+                    }
+                    else // GAME RUNNING  Wave is not complete and not pending completion
+                    {
+                        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
+                            game.SpawnEnemy();
+                        waveTime += Time.deltaTime;
+                        gameTimeText.text = (60 - waveTime).ToString("N00");
+                        if (waveTime >= 60)
+                        {
+                            game.statistics.waveCompletePending = true;
+                            gameTimeText.text = "";
+                        }
+                        else
+                        {
+                            spawnTimer += Time.deltaTime;
+                            if (spawnTimer > rndDelay)
+                            {
+                                Debug.Log("rnd delay: " + rndDelay);
+                                spawnTimer = 0;
+                                int rndAmt = 1;
+
+                                switch (game.statistics.wave)
+                                {
+                                    case 1:
+                                        rndDelay = Random.Range(10, 21);
+                                        rndAmt = Random.Range(1, 3);
+                                        break;
+                                    case 2:
+                                        rndDelay = Random.Range(9.5f, 20);
+                                        rndAmt = Random.Range(1, 3);
+                                        break;
+                                    case 3:
+                                        rndDelay = Random.Range(9, 19);
+                                        rndAmt = Random.Range(1, 4);
+                                        break;
+                                    case 4:
+                                        rndDelay = Random.Range(8.5f, 18);
+                                        rndAmt = Random.Range(2, 4);
+                                        break;
+                                    case 5:
+                                        rndDelay = Random.Range(8, 17);
+                                        rndAmt = Random.Range(2, 5);
+                                        break;
+                                    case 6:
+                                        rndDelay = Random.Range(7.5f, 16);
+                                        rndAmt = Random.Range(2, 5);
+                                        break;
+                                    case 7:
+                                        rndDelay = Random.Range(7, 15);
+                                        rndAmt = Random.Range(3, 6);
+                                        break;
+                                    case 8:
+                                        rndDelay = Random.Range(6.5f, 14);
+                                        rndAmt = Random.Range(3, 6);
+                                        break;
+                                    case 9:
+                                        rndDelay = Random.Range(6, 13);
+                                        rndAmt = Random.Range(3, 7);
+                                        break;
+                                    case 10:
+                                        rndDelay = Random.Range(6.5f, 12);
+                                        rndAmt = Random.Range(4, 7);
+                                        break;
+                                    default:
+                                        rndDelay = Random.Range(6, 11);
+                                        rndAmt = Random.Range(4, 8);
+                                        break;
+                                }
+
+                                for (int i = 0; i < rndAmt; i++)
+                                    game.SpawnEnemy();
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void SetStore()
@@ -138,17 +241,22 @@ public class Screen_Manager : MonoBehaviour
             case 0: // Splash
                 player.SetVariables();
                 game.statistics.wave = 1;
-                game.statistics.money = 10000000;
+                game.statistics.money = 0;
                 player.weapon.upgradeLevel = 0;
                 player.movement.upgradeLevel = 0;
                 player.armour.upgradeLevel = 0;
                 player.shield.upgradeLevel = 0;
+                highScorePanel.SetActive(false);
+                deathDetails.SetActive(false);
                 break;
             case 1: // Home    
                 break;
-            case 2: // Score          
+            case 2: // Credits          
                 break;
-            case 3: // Game-Menu                   
+            case 3: // Game-Menu         
+                game.statistics.gameStarted = false;
+                gameTimeText.text = "";
+                player.weapon.canShootNormal = false;
                 foreach (Transform child in game.trashCollocter)
                 {
                     Destroy(child.gameObject);
@@ -162,34 +270,27 @@ public class Screen_Manager : MonoBehaviour
                     ScreenChanger(5);
                 break;
             case 4: // Gameplay
-                if (player.armour.isAlive)
-                {
-                    Debug.Log("weapon.upgradeLevel" + player.weapon.upgradeLevel);
-
-                    if (player.weapon.upgradeLevel <= 5)
+                StartCoroutine(game.WaveStart());
+                rndDelay = Random.Range(0.5f, 3);
+                if (player.weapon.upgradeLevel <= 5)
                     playerTurretRenderer.sprite = playerTurretSprite[player.weapon.upgradeLevel];
-                    else
-                        player.weapon.upgradeLevel = 5;
-
-                    if (player.shield.upgradeLevel <= 5)
-                        playerShieldRenderer.sprite = playerShieldSprite[player.shield.upgradeLevel];
-                    else
-                        player.shield.upgradeLevel = 5;
-
-                    if (player.movement.upgradeLevel <= 5)
-                        playerTreadsRenderer.sprite = playerTreadsSprite[player.movement.upgradeLevel];
-                    else
-                        player.movement.upgradeLevel = 5;
-
-                    if (player.armour.upgradeLevel <= 5)
-                        playerArmourRenderer.sprite = playerArmourSprite[player.armour.upgradeLevel];
-                    else
-                        player.armour.upgradeLevel = 5;
-
-                    StartCoroutine(game.WaveStart());
-                }
                 else
-                    ScreenChanger(5);
+                    player.weapon.upgradeLevel = 5;
+
+                if (player.shield.upgradeLevel <= 5)
+                    playerShieldRenderer.sprite = playerShieldSprite[player.shield.upgradeLevel];
+                else
+                    player.shield.upgradeLevel = 5;
+
+                if (player.movement.upgradeLevel <= 5)
+                    playerTreadsRenderer.sprite = playerTreadsSprite[player.movement.upgradeLevel];
+                else
+                    player.movement.upgradeLevel = 5;
+
+                if (player.armour.upgradeLevel <= 5)
+                    playerArmourRenderer.sprite = playerArmourSprite[player.armour.upgradeLevel];
+                else
+                    player.armour.upgradeLevel = 5;
                 break;
             case 5: // Game Over
                 if (Advertisement.IsReady("rewardedVideo"))
@@ -201,6 +302,7 @@ public class Screen_Manager : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
+
                 playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();
                 playerArmourRepaires.text = game.statistics.playerArmourRepairs.ToString();
                 enemyBullet4Fired.text = game.statistics.enemyBulletType4Destroyed.ToString();
@@ -220,6 +322,8 @@ public class Screen_Manager : MonoBehaviour
                 enemyType4KilledTotal.text = (game.statistics.enemyType4Killed * 30000).ToString("C00");
 
                 int _total = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerArmourRepairs * 2500));
+                lastScore.text = "SCORE\n" + _total.ToString("C00");
+                lastWave.text = "WAVE\n" + game.statistics.wave.ToString("N00");
                 total.text = _total.ToString("C00");
 
                 if (PlayerPrefs.HasKey("HighScore"))
@@ -242,7 +346,12 @@ public class Screen_Manager : MonoBehaviour
                     previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                     newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
                     PlayerPrefs.SetInt("HighScore", _total);
+                    PlayerPrefs.SetInt("HighWave", game.statistics.wave);
                 }
+                break;
+            case 6: // Score
+                highScore.text = "SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                highWave.text = "WAVE\n" + PlayerPrefs.GetInt("HighWave").ToString("N00");
                 break;
         }
     }

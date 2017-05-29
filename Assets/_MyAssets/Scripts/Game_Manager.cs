@@ -14,12 +14,13 @@ public class Game_Manager : MonoBehaviour
 
     public Statistics statistics = new Statistics();
     public class Statistics
-    {        
-        public bool waveStart = false;
+    {
+        public bool waveComplete;
+        public bool waveCompletePending ;
+        public bool gameStarted;
+        public float waveTime;
         public int wave;
         public int money;
-        public int enemiesSpawned;
-        public int enemiesKilled = 0;
 
         public int playerBulletsFired = 0;
         public int playerSpecialBulletsFired = 0;
@@ -34,8 +35,7 @@ public class Game_Manager : MonoBehaviour
         public void BankDeposit(int amt)
         {
             money += amt;
-            Debug.Log("Bank Deposit: " + amt + "\n" +
-                      "Bank Total: " + money);
+            //Debug.Log("Bank Deposit: " + amt + "\n" + "Bank Total: " + money);
         }
         public void BankWithdrawal(int amt)
         {
@@ -48,9 +48,9 @@ public class Game_Manager : MonoBehaviour
     public Store store = new Store();
     public class Store
     {
-        public int shieldCost = 150000;
-        public int treadCost = 25000;
-        public int cannonCost = 50000;
+        public int shieldCost = 250000;
+        public int treadCost = 50000;
+        public int cannonCost = 150000;
         public int armourCost = 75000;
     }
 
@@ -65,81 +65,12 @@ public class Game_Manager : MonoBehaviour
         }
     }
 
-    public void EnemyKilled()
-    {
-        statistics.enemiesKilled++;
-        if (statistics.enemiesKilled >= statistics.enemiesSpawned && spawnCalls >= statistics.wave)
-        {
-            statistics.waveStart = false;
-            player.weapon.time = player.weapon.fireRate;
-            player.weapon.reloadImage.fillAmount = player.weapon.time / player.weapon.fireRate;
-            StartCoroutine(WaveCompleteDelay());
-        }
-    }
-    private int spawnCalls;
-
     public void SpawnEnemy()
     {
-        if (screenManager.screenIndex == 4)
-        {            
-            Transform trans = GameObject.FindGameObjectWithTag("Player").transform;
-            if (!trans)
-                trans = GameObject.Find("Player").transform;
-            
-            int rndNumSpwn = Random.Range(1, 5);
-            spawnCalls++;
-            for (int i = 0; i < rndNumSpwn; i++)
-            {
-                statistics.enemiesSpawned++;
-                StartCoroutine(SpawnDelay());
-            }
-        }
-    }
-
-    public IEnumerator WaveStart()
-    {
-        topPanelGO.SetActive(true);
-        notificationText.text = "WAVE " + statistics.wave.ToString();
-        yield return new WaitForSeconds(0.01f);
-        spawnCalls = 0;
-        statistics.enemiesSpawned = 0;
-        statistics.enemiesKilled = 0;
-        player.WaveReset();
-        yield return new WaitForSeconds(1);
-        notificationText.text = "3";
-        yield return new WaitForSeconds(1);
-        notificationText.text = "2";
-        yield return new WaitForSeconds(1);
-        notificationText.text = "1";
-        yield return new WaitForSeconds(1);
-        notificationText.text = "FIGHT!";
-        yield return new WaitForSeconds(1);
-        statistics.waveStart = true;
-        topPanelGO.SetActive(false);        
-        SpawnEnemy();
-        for (int i = 0; i < statistics.wave; i++)
-        {
-            int delay = Random.Range(2, 6);
-            yield return new WaitForSeconds(delay);
-            SpawnEnemy();
-        }
-    }
-    IEnumerator WaveCompleteDelay()
-    {
-        topPanelGO.SetActive(true);
-        notificationText.text = "WAVE COMPLETE!";
-        yield return new WaitForSeconds(3);
-        screenManager.screenIndex = 1;
-        statistics.wave++;
-        screenManager.ScreenChanger(3);
-    }
-    private IEnumerator SpawnDelay()
-    {
-        float rndTime = Random.Range(0.5f, 2);
-        yield return new WaitForSeconds(rndTime);
+        Transform trans = GameObject.FindGameObjectWithTag("Player").transform;
         int rnd = Random.Range(0, Enemies.Length);
         Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        GameObject go = Instantiate(Enemies[rnd], new Vector3(Random.Range(-screenVec.x, screenVec.x), screenVec.y, 0), Quaternion.identity) as GameObject;
+        GameObject go = Instantiate(Enemies[rnd], new Vector3(Random.Range((float)-screenVec.x, (float)screenVec.x), (float)screenVec.y, 0), Quaternion.identity) as GameObject;
         go.transform.SetParent(trashCollocter.transform);
         switch (rnd)
         {
@@ -169,5 +100,37 @@ public class Game_Manager : MonoBehaviour
                 go.GetComponent<Enemy_AI>().shootTime = 1.5f;
                 break;
         }
+    }
+
+    public IEnumerator WaveStart()
+    {   
+        topPanelGO.SetActive(true);
+        notificationText.text = "WAVE " + statistics.wave.ToString();
+        yield return new WaitForSeconds(0.01f);
+        player.WaveReset();
+        yield return new WaitForSeconds(1);
+        notificationText.text = "3";
+        yield return new WaitForSeconds(1);
+        notificationText.text = "2";
+        yield return new WaitForSeconds(1);
+        notificationText.text = "1";
+        yield return new WaitForSeconds(1);
+        notificationText.text = "FIGHT!";
+        yield return new WaitForSeconds(1);
+        topPanelGO.SetActive(false);
+        statistics.waveComplete = false;
+        statistics.gameStarted = true;
+    }
+    public IEnumerator WaveCompleteDelay()
+    {
+        statistics.gameStarted = false;
+        statistics.waveComplete = true;
+        statistics.waveCompletePending = false;
+        topPanelGO.SetActive(true);
+        notificationText.text = "WAVE COMPLETE!";
+        yield return new WaitForSeconds(3);
+        screenManager.screenIndex = 1;
+        statistics.wave++;
+        screenManager.ScreenChanger(3);
     }
 }

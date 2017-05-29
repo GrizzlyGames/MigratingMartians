@@ -3,7 +3,6 @@ using System.Collections;
 
 public class DestroySelfByTime_Script : MonoBehaviour {
 
-    public bool autoDestroy;
     public float destoryTime;
 
     private void Start()

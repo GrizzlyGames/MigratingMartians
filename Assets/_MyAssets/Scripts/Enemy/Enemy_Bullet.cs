@@ -22,15 +22,15 @@ public class Enemy_Bullet : MonoBehaviour
         {
             case 2:
                 spriteRenderer.color = new Color32(255, 0, 0, 255); // red
-                this.transform.localScale = new Vector3(this.transform.localScale.x - 0.2f, this.transform.localScale.y - 0.2f, 1);
+                this.transform.localScale = new Vector3(0.3f, 0.3f, 1);
                 break;
             case 3:
                 spriteRenderer.color = new Color32(0, 255, 255, 255); // light blue
-                this.transform.localScale = new Vector3(this.transform.localScale.x + 0.2f, this.transform.localScale.y + 0.2f, 1);
+                this.transform.localScale = new Vector3(0.6f, 0.6f, 1);
                 break;
             case 4:
                 spriteRenderer.color = new Color32(255, 0, 255, 255); // Pink
-                this.transform.localScale = new Vector3(this.transform.localScale.x + 0.5f, this.transform.localScale.y + 0.5f, 1);
+                this.transform.localScale = new Vector3(0.9f, 0.9f, 1);
                 break;
         }
     }

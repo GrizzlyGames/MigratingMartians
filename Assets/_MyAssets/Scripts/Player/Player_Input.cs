@@ -18,7 +18,7 @@ public class Player_Input : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 player.input.mStartPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-                player.input.mSwipeStartTime = Time.time;
+                player.input.mSwipeStartTime = Time.time;                
             }
             if (Input.GetMouseButtonUp(0))
             {
@@ -26,11 +26,11 @@ public class Player_Input : MonoBehaviour
                 Vector2 endPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
                 Vector2 swipeVector = endPosition - player.input.mStartPosition;
                 float velocity = swipeVector.magnitude / deltaTime;
-                if (velocity > player.input.mMinVelocity && swipeVector.magnitude > player.input.mMinSwipeDist)
+                if (velocity > 500 && swipeVector.magnitude > 10)
                 {
                     player.weapon.SpecialShot();
                 }
-                else
+                else if (swipeVector.magnitude < 5)
                     player.weapon.Shoot();
             }
 

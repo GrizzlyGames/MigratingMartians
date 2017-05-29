@@ -76,7 +76,7 @@ public class Enemy_AI : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("PlayerBullet") || collision.transform.CompareTag("Explosion"))
+        if (collision.transform.CompareTag("PlayerBullet") || collision.transform.CompareTag("SpecialBullet") || collision.transform.CompareTag("Explosion"))
         {            
             switch (type)
             {
@@ -123,7 +123,6 @@ public class Enemy_AI : MonoBehaviour
         }
         GameObject go = Instantiate(explosion, this.transform.position, Quaternion.identity) as GameObject;
         go.transform.SetParent(game.trashCollocter);
-        game.EnemyKilled();
         Destroy(this.gameObject);
     }
 }

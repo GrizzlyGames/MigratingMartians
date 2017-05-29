@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Player_Manager))]
 public class Player_Health : MonoBehaviour
 {
+    public GameObject explosion;
     public GameObject health;
     private Player_Manager player;
     private Game_Manager game;
@@ -42,6 +43,7 @@ public class Player_Health : MonoBehaviour
 
     private IEnumerator DeathDelay()
     {
+        Instantiate(explosion, this.transform.position, Quaternion.identity);
         player.armour.isAlive = false;
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);

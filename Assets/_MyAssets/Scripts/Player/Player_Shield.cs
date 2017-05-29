@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_Shield : MonoBehaviour
 {
+    public GameObject shield;
     private Player_Manager player;
 
     private void Start()
@@ -16,16 +17,17 @@ public class Player_Shield : MonoBehaviour
         if (player.shield.shieldTotal < 1.0f) // If player shield is less than full
         {
             player.shield.collider.enabled = false;
-            player.shield.sprite.enabled = false;
+            shield.SetActive(false);
             player.shield.isActive = false;
-            player.shield.shieldTotal += (player.shield.rechargeRate * Time.deltaTime);
+            if (player.armour.isAlive)
+                player.shield.shieldTotal += (player.shield.rechargeRate * Time.deltaTime);
         }
         else
         {
             player.shield.collider.enabled = true;
-            player.shield.sprite.enabled = true;
+            shield.SetActive(true);
             player.shield.isActive = true;
-        }            
+        }
         player.shield.UpdateDisplay();
     }
 }

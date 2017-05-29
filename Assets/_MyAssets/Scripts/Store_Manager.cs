@@ -25,10 +25,9 @@ public class Store_Manager : MonoBehaviour
                     {
                         screen.turretCostText.text = "SOLD";
                     }
-                    player.weapon.fireRate -= 0.3f;
+                    player.weapon.normalFireRate -= 0.3f;
+                    player.weapon.specialFireRate -= 0.5f;
                     player.weapon.bulletSpeed += 1;
-                    Debug.Log("Player weapon fireRate: " + player.weapon.fireRate);
-                    Debug.Log("Player weapon bulletSpeed: " + player.weapon.bulletSpeed);
 
                     game.statistics.BankWithdrawal(game.store.cannonCost);
                     game.store.cannonCost *= 2;

@@ -15,9 +15,6 @@ public class Player_Manager : MonoBehaviour
     public Input input = new Input();
     public class Input
     {
-        public float mMinSwipeDist = 10.0f;
-        public float mMinVelocity = 500.0f;
-
         public Vector2 mStartPosition;
         public float mSwipeStartTime;
 
@@ -53,8 +50,10 @@ public class Player_Manager : MonoBehaviour
     public Weapon weapon = new Weapon();
     public class Weapon
     {
-        public float time;
-        public float fireRate;
+        public float normalTime;
+        public float specialTime;
+        public float normalFireRate;
+        public float specialFireRate;
         public float bulletSpeed;
         public int upgradeLevel = 0;
         public Game_Manager _game;
@@ -64,9 +63,10 @@ public class Player_Manager : MonoBehaviour
         public Transform trashCollocter;
         public Transform spawnTransform;
         public Transform turretTransform;
-        public bool canShootNormal = true;
-        public bool canShootSpecial = true;
-        public Image reloadImage;
+        public bool canShootNormal;
+        public bool canShootSpecial;
+        public Image normalReloadImage;
+        public Image specialReloadImage;
         public Image bulletImage;
 
         public void Shoot()
@@ -76,32 +76,38 @@ public class Player_Manager : MonoBehaviour
                 _game.statistics.playerBulletsFired++;
                 _game.statistics.money -= 500;
                 canShootNormal = false;
-                reloadImage.fillAmount = 0;
+                normalReloadImage.fillAmount = 0;                
                 audioSource.Play();
                 GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
                 bullet.transform.SetParent(trashCollocter);
-            }
+                bullet.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+            }                
         }
-
         public void SpecialShot()
         {
             if (canShootSpecial)
-            {
+            {                
+                specialReloadImage.fillAmount = 0;
                 _game.statistics.playerSpecialBulletsFired++;
                 _game.statistics.money -= 2500;
                 canShootSpecial = false;
-                reloadImage.fillAmount = 0;
                 audioSource.Play();
                 GameObject bullet = Instantiate(specialBullet, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed * 2;
                 bullet.transform.SetParent(trashCollocter);
+                bullet.transform.localScale = new Vector3(1, 1, 1);
             }
         }
 
-        public void UpdateDisplay()
+        public void UpdateNormalDisplay()
         {
-            reloadImage.fillAmount = time / fireRate;
+            normalReloadImage.fillAmount = normalTime / normalFireRate;
+        }
+
+        public void UpdateSpecialDisplay()
+        {
+            specialReloadImage.fillAmount = specialTime / specialFireRate;
         }
     }
 
@@ -116,7 +122,6 @@ public class Player_Manager : MonoBehaviour
         public Image image;
         public Text shieldHUDText;
         public CircleCollider2D collider;
-        public SpriteRenderer sprite;
 
         public void UpdateDisplay()
         {
@@ -124,18 +129,19 @@ public class Player_Manager : MonoBehaviour
             shieldHUDText.text = amount.ToString("P00");
             image.fillAmount = amount;
             float alpha = (float)255 * (float)amount;
-            sprite.color = new Color32(0, 255, 255, (byte)alpha);
         }
     }
 
     public Image healthImage;
-    public Image reloadImage;
+    public Image normalReloadImage;
+    public Image specialReloadImage;
     public Image shieldImage;
 
     private void Start()
     {
         armour.image = healthImage;
-        weapon.reloadImage = reloadImage;
+        weapon.normalReloadImage = normalReloadImage;
+        weapon.specialReloadImage = specialReloadImage;
         shield.image = shieldImage;
         armour.armourHUDText = GameObject.Find("armourHUDText").GetComponent<Text>();
         shield.shieldHUDText = GameObject.Find("shieldHUDText").GetComponent<Text>();
@@ -147,7 +153,6 @@ public class Player_Manager : MonoBehaviour
         weapon.turretTransform = transform.GetChild(0).GetChild(0);
         weapon.spawnTransform = weapon.turretTransform.GetChild(0).GetChild(0);
         weapon.projectileGO = normalBulletGO;
-        shield.sprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
         shield.collider = transform.GetChild(1).GetComponent<CircleCollider2D>();
     }
     private void Update()
@@ -155,12 +160,22 @@ public class Player_Manager : MonoBehaviour
         #region Weapon
         if (!weapon.canShootNormal)
         {
-            weapon.time += Time.deltaTime;
-            weapon.UpdateDisplay();
-            if (weapon.time >= weapon.fireRate)
+            weapon.normalTime += Time.deltaTime;
+            weapon.UpdateNormalDisplay();
+            if (weapon.normalTime >= weapon.normalFireRate)
             {
                 weapon.canShootNormal = true;
-                weapon.time = 0;
+                weapon.normalTime = 0;
+            }
+        }
+        if (!weapon.canShootSpecial)
+        {
+            weapon.specialTime += Time.deltaTime;
+            weapon.UpdateSpecialDisplay();
+            if (weapon.specialTime >= weapon.specialFireRate)
+            {
+                weapon.canShootSpecial = true;
+                weapon.specialTime = 0;
             }
         }
         #endregion
@@ -185,8 +200,9 @@ public class Player_Manager : MonoBehaviour
         armour.maxArmour = 1;
         armour.currentArmour = armour.maxArmour;
 
-        weapon.time = 0;
-        weapon.fireRate = 2.2f;
+        weapon.normalTime = 0;
+        weapon.normalFireRate = 2.2f;
+        weapon.specialFireRate = 15;
         weapon.bulletSpeed = 5;
 
         shield.isActive = true;
@@ -195,18 +211,19 @@ public class Player_Manager : MonoBehaviour
     }
     public void WaveReset()
     {
+        weapon.canShootNormal = false;
+        weapon.canShootSpecial = false;
         int armourRepaired = armour.maxArmour - armour.currentArmour;
         Debug.Log("Armour repaired " + armourRepaired);
         game.statistics.money -= (2500 * armourRepaired);
         Debug.Log("Armour repair cost: " + (2500 * armourRepaired));
         game.statistics.playerArmourRepairs += armourRepaired;
         armour.currentArmour = armour.maxArmour;
-        weapon.time = weapon.fireRate;
+        weapon.normalTime = weapon.normalFireRate;
+        weapon.specialTime = weapon.specialFireRate;
         transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(1).gameObject.SetActive(true);
-
-        armour.UpdateDisplay();
-        shield.UpdateDisplay();
-        weapon.UpdateDisplay();
+        transform.GetChild(1).gameObject.SetActive(true);        
+        weapon.specialTime = weapon.specialFireRate;
+        weapon.normalTime = weapon.normalFireRate;        
     }
 }

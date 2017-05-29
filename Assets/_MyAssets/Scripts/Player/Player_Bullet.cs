@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Player_Bullet : MonoBehaviour
 {
+    public bool isSpecial = false;
+
     [HideInInspector]
     public float speed;
 
@@ -26,7 +28,10 @@ public class Player_Bullet : MonoBehaviour
             switch (other.transform.GetComponent<Enemy_Bullet>().type)
             {
                 case 2:
-                    Destroy(this.gameObject);
+                    if (!isSpecial)
+                        Destroy(this.gameObject);
+                    else
+                        Destroy(other.gameObject);
                     break;
                 case 3:
                     game.statistics.enemyBulletType3Destroyed++;
@@ -40,7 +45,8 @@ public class Player_Bullet : MonoBehaviour
                     break;
             }
         }
-        if (other.gameObject.tag == "Explosion") {
+        if (other.gameObject.tag == "Explosion")
+        {
             Destroy(gameObject);
         }
     }
