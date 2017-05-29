@@ -22,6 +22,7 @@ public class Game_Manager : MonoBehaviour
         public int waveDuration;
         public int wave;
         public int money;
+        public int gameScore;
 
         public int playerBulletsFired = 0;
         public int playerSpecialBulletsFired = 0;
@@ -49,10 +50,10 @@ public class Game_Manager : MonoBehaviour
     public Store store = new Store();
     public class Store
     {
-        public int shieldCost = 400000;
-        public int treadCost = 75000;
-        public int cannonCost = 250000;
-        public int armourCost = 125000;
+        public int shieldCost = 250000;
+        public int treadCost = 25000;
+        public int cannonCost = 1250000;
+        public int armourCost = 75000;
     }
 
     public bool resetPrefs = true;

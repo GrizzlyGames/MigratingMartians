@@ -292,7 +292,7 @@ public class Screen_Manager : MonoBehaviour
                     player.armour.upgradeLevel = 5;
                 break;
             case 5: // Game Over
-                int _total = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerSpecialBulletsFired * 2500) + (game.statistics.playerArmourRepairs * 2500));
+                game.statistics.gameScore = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerSpecialBulletsFired * 2500) + (game.statistics.playerArmourRepairs * 2500));
 
                 if (Advertisement.IsReady("rewardedVideo"))
                 {
@@ -308,13 +308,13 @@ public class Screen_Manager : MonoBehaviour
 
                 if (PlayerPrefs.HasKey("HighScore"))
                 {
-                    if (_total > PlayerPrefs.GetInt("HighScore"))
+                    if (game.statistics.gameScore > PlayerPrefs.GetInt("HighScore"))
                     {
                         highScorePanel.SetActive(true);
                         deathDetails.SetActive(false);
                         previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
-                        newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                        PlayerPrefs.SetInt("HighScore", _total);
+                        newHighScoreText.text = "New High Score\n" + game.statistics.gameScore.ToString("C00");
+                        PlayerPrefs.SetInt("HighScore", game.statistics.gameScore);
                         PlayerPrefs.SetInt("HighWave", game.statistics.wave);
                     }
                     else
@@ -328,8 +328,8 @@ public class Screen_Manager : MonoBehaviour
                     highScorePanel.SetActive(true);
                     deathDetails.SetActive(false);
                     previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
-                    newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                    PlayerPrefs.SetInt("HighScore", _total);
+                    newHighScoreText.text = "New High Score\n" + game.statistics.gameScore.ToString("C00");
+                    PlayerPrefs.SetInt("HighScore", game.statistics.gameScore);
                     PlayerPrefs.SetInt("HighWave", game.statistics.wave);
                 }
 
@@ -355,11 +355,11 @@ public class Screen_Manager : MonoBehaviour
                 enemyType4KilledTotal.text = (game.statistics.enemyType4Killed * 30000).ToString("C00");
                                 
                 // Updates scores page
-                lastScore.text = "SCORE\n" + _total.ToString("C00");
+                lastScore.text = "SCORE\n" + game.statistics.gameScore.ToString("C00");
                 lastWave.text = "WAVE\n" + game.statistics.wave.ToString("N00");
 
                 // death details total score
-                totalScore.text = _total.ToString("C00");                
+                totalScore.text = game.statistics.gameScore.ToString("C00");                
                 break;
             case 6: // Score
                 highScore.text = "SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");

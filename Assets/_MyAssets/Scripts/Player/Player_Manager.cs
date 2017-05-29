@@ -198,6 +198,7 @@ public class Player_Manager : MonoBehaviour
         game.statistics.wave = 1;
         game.statistics.waveTime = 0;
         game.statistics.money = 0;
+        game.statistics.gameScore = 0;
 
         movement.upgradeLevel = 0;
         movement.speed = 1;
