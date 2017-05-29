@@ -52,7 +52,7 @@ public class Game_Manager : MonoBehaviour
     {
         public int shieldCost = 250000;
         public int treadCost = 25000;
-        public int cannonCost = 1250000;
+        public int cannonCost = 125000;
         public int armourCost = 75000;
     }
 
