@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Advertisements;
 public class Screen_Manager : MonoBehaviour
 {
-    public Text gameTimeText;
+    // Store
     public Text bankText;
     public Text turretLevelText;
     public Text turretCostText;
@@ -17,11 +17,21 @@ public class Screen_Manager : MonoBehaviour
     public Text armourCostText;
     public Text waveText;
 
+    // Game-Over
     public GameObject deathDetails;
     public GameObject highScorePanel;
+
+    // Score 
     public Text previousHighScoreText;
+    public Text previousWaves;
+
+    // Details
     public Text newHighScoreText;
+    public Text newWaveText;
+
+
     public Text playerBulletsFired;
+    public Text playerSpecialBulletsFired;
     public Text playerArmourRepaires;
     public Text enemyBullet3Fired;
     public Text enemyBullet4Fired;
@@ -30,9 +40,10 @@ public class Screen_Manager : MonoBehaviour
     public Text enemyType3Killed;
     public Text enemyType4Killed;
 
-    public Text total;
+    public Text totalScore;
 
     public Text playerBulletsFiredTotal;
+    public Text playerSpecialBulletsFiredTotal;
     public Text playerArmourRepairesTotal;
     public Text enemyBullet3FiredTotal;
     public Text enemyBullet4FiredTotal;
@@ -76,14 +87,13 @@ public class Screen_Manager : MonoBehaviour
         game = GetComponent<Game_Manager>();
         ScreenChanger(screenIndex);
     }
-    private float waveTime;
     private float spawnTimer;
     private float rndDelay;
     private void Update()
     {
         if (screenIndex == 4)
         {
-            if (player.armour.isAlive && game.statistics.gameStarted)
+            if (game.statistics.gameStarted)
             {
                 if (!game.statistics.waveComplete) // Game running
                 {
@@ -91,21 +101,26 @@ public class Screen_Manager : MonoBehaviour
                     {
                         if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1 && GameObject.FindGameObjectsWithTag("EnemyBullet").Length < 1)
                         {
-                            game.statistics.waveComplete = true;
-                            waveTime = 0;
-                            StartCoroutine(game.WaveCompleteDelay());
+                            if (player.armour.isAlive)
+                            {
+                                game.statistics.waveComplete = true;
+                                StartCoroutine(game.WaveCompleteDelay());
+                            }                            
                         }
                     }
                     else // GAME RUNNING  Wave is not complete and not pending completion
                     {
                         if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
                             game.SpawnEnemy();
-                        waveTime += Time.deltaTime;
-                        gameTimeText.text = (60 - waveTime).ToString("N00");
-                        if (waveTime >= 60)
+                        game.statistics.waveTime += Time.deltaTime;                      
+
+
+                        if (game.statistics.waveTime >= game.statistics.waveDuration)
                         {
+                            Debug.Log("wave time: " + game.statistics.waveTime);
+                            Debug.Log("wave duration: " + game.statistics.waveDuration);
+                            Debug.Log("wave time reached.");
                             game.statistics.waveCompletePending = true;
-                            gameTimeText.text = "";
                         }
                         else
                         {
@@ -240,14 +255,6 @@ public class Screen_Manager : MonoBehaviour
         {
             case 0: // Splash
                 player.SetVariables();
-                game.statistics.wave = 1;
-                game.statistics.money = 0;
-                player.weapon.upgradeLevel = 0;
-                player.movement.upgradeLevel = 0;
-                player.armour.upgradeLevel = 0;
-                player.shield.upgradeLevel = 0;
-                highScorePanel.SetActive(false);
-                deathDetails.SetActive(false);
                 break;
             case 1: // Home    
                 break;
@@ -255,19 +262,11 @@ public class Screen_Manager : MonoBehaviour
                 break;
             case 3: // Game-Menu         
                 game.statistics.gameStarted = false;
-                gameTimeText.text = "";
-                player.weapon.canShootNormal = false;
                 foreach (Transform child in game.trashCollocter)
                 {
                     Destroy(child.gameObject);
                 }
-                if (player.armour.isAlive)
-                {
-                    player.shield.shieldTotal = 1;
-                    SetStore();
-                }
-                else
-                    ScreenChanger(5);
+                SetStore();
                 break;
             case 4: // Gameplay
                 StartCoroutine(game.WaveStart());
@@ -293,17 +292,50 @@ public class Screen_Manager : MonoBehaviour
                     player.armour.upgradeLevel = 5;
                 break;
             case 5: // Game Over
+                int _total = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerSpecialBulletsFired * 2500) + (game.statistics.playerArmourRepairs * 2500));
+
                 if (Advertisement.IsReady("rewardedVideo"))
                 {
                     var options = new ShowOptions { resultCallback = HandleShowResult };
                     Advertisement.Show("rewardedVideo", options);
                 }
+
+
                 foreach (Transform child in game.trashCollocter)
                 {
                     Destroy(child.gameObject);
                 }
 
+                if (PlayerPrefs.HasKey("HighScore"))
+                {
+                    if (_total > PlayerPrefs.GetInt("HighScore"))
+                    {
+                        highScorePanel.SetActive(true);
+                        deathDetails.SetActive(false);
+                        previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                        newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
+                        PlayerPrefs.SetInt("HighScore", _total);
+                        PlayerPrefs.SetInt("HighWave", game.statistics.wave);
+                    }
+                    else
+                    {
+                        deathDetails.SetActive(true);
+                        highScorePanel.SetActive(false);
+                    }
+                }
+                else // Set highscore
+                {
+                    highScorePanel.SetActive(true);
+                    deathDetails.SetActive(false);
+                    previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
+                    newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
+                    PlayerPrefs.SetInt("HighScore", _total);
+                    PlayerPrefs.SetInt("HighWave", game.statistics.wave);
+                }
+
+
                 playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();
+                playerSpecialBulletsFired.text = game.statistics.playerSpecialBulletsFired.ToString();
                 playerArmourRepaires.text = game.statistics.playerArmourRepairs.ToString();
                 enemyBullet4Fired.text = game.statistics.enemyBulletType4Destroyed.ToString();
                 enemyBullet3Fired.text = game.statistics.enemyBulletType3Destroyed.ToString();
@@ -313,6 +345,7 @@ public class Screen_Manager : MonoBehaviour
                 enemyType4Killed.text = game.statistics.enemyType4Killed.ToString();
 
                 playerBulletsFiredTotal.text = "-" + (game.statistics.playerBulletsFired * 500).ToString("C00");
+                playerSpecialBulletsFiredTotal.text = "-" + (game.statistics.playerSpecialBulletsFired * 2500).ToString("C00");
                 playerArmourRepairesTotal.text = "-" + (game.statistics.playerArmourRepairs * 2500).ToString("C00");
                 enemyBullet4FiredTotal.text = (game.statistics.enemyBulletType4Destroyed * 500).ToString("C00");
                 enemyBullet3FiredTotal.text = (game.statistics.enemyBulletType3Destroyed * 1500).ToString("C00");
@@ -320,34 +353,13 @@ public class Screen_Manager : MonoBehaviour
                 enemyType2KilledTotal.text = (game.statistics.enemyType2Killed * 25000).ToString("C00");
                 enemyType3KilledTotal.text = (game.statistics.enemyType3Killed * 25000).ToString("C00");
                 enemyType4KilledTotal.text = (game.statistics.enemyType4Killed * 30000).ToString("C00");
-
-                int _total = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerArmourRepairs * 2500));
+                                
+                // Updates scores page
                 lastScore.text = "SCORE\n" + _total.ToString("C00");
                 lastWave.text = "WAVE\n" + game.statistics.wave.ToString("N00");
-                total.text = _total.ToString("C00");
 
-                if (PlayerPrefs.HasKey("HighScore"))
-                {
-                    if (_total > PlayerPrefs.GetInt("HighScore"))
-                    {
-                        highScorePanel.SetActive(true);
-                        previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
-                        newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                        PlayerPrefs.SetInt("HighScore", _total);
-                    }
-                    else
-                    {
-                        highScorePanel.SetActive(false);
-                    }
-                }
-                else
-                {
-                    highScorePanel.SetActive(true);
-                    previousHighScoreText.text = "Prevous High Score\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
-                    newHighScoreText.text = "New High Score\n" + _total.ToString("C00");
-                    PlayerPrefs.SetInt("HighScore", _total);
-                    PlayerPrefs.SetInt("HighWave", game.statistics.wave);
-                }
+                // death details total score
+                totalScore.text = _total.ToString("C00");                
                 break;
             case 6: // Score
                 highScore.text = "SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");

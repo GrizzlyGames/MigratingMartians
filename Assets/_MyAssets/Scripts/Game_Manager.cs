@@ -16,9 +16,10 @@ public class Game_Manager : MonoBehaviour
     public class Statistics
     {
         public bool waveComplete;
-        public bool waveCompletePending ;
+        public bool waveCompletePending;
         public bool gameStarted;
         public float waveTime;
+        public int waveDuration;
         public int wave;
         public int money;
 
@@ -48,10 +49,10 @@ public class Game_Manager : MonoBehaviour
     public Store store = new Store();
     public class Store
     {
-        public int shieldCost = 250000;
-        public int treadCost = 50000;
-        public int cannonCost = 150000;
-        public int armourCost = 75000;
+        public int shieldCost = 400000;
+        public int treadCost = 75000;
+        public int cannonCost = 250000;
+        public int armourCost = 125000;
     }
 
     public bool resetPrefs = true;
@@ -119,13 +120,24 @@ public class Game_Manager : MonoBehaviour
         yield return new WaitForSeconds(1);
         topPanelGO.SetActive(false);
         statistics.waveComplete = false;
+        statistics.waveCompletePending = false;
+
+
+        if (statistics.wave < 4)
+            statistics.waveDuration = 15;
+        else if (statistics.wave >= 4 && statistics.wave < 7)
+            statistics.waveDuration = 30;
+        else if (statistics.wave >= 7 && statistics.wave < 10)
+            statistics.waveDuration = 45;
+        else
+            statistics.waveDuration = 60;
+
         statistics.gameStarted = true;
     }
     public IEnumerator WaveCompleteDelay()
     {
         statistics.gameStarted = false;
         statistics.waveComplete = true;
-        statistics.waveCompletePending = false;
         topPanelGO.SetActive(true);
         notificationText.text = "WAVE COMPLETE!";
         yield return new WaitForSeconds(3);

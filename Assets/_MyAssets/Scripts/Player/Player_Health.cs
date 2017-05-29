@@ -41,7 +41,7 @@ public class Player_Health : MonoBehaviour
         }
     }
 
-    private IEnumerator DeathDelay()
+    public IEnumerator DeathDelay()
     {
         Instantiate(explosion, this.transform.position, Quaternion.identity);
         player.armour.isAlive = false;

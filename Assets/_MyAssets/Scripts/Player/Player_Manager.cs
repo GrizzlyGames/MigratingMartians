@@ -76,18 +76,18 @@ public class Player_Manager : MonoBehaviour
                 _game.statistics.playerBulletsFired++;
                 _game.statistics.money -= 500;
                 canShootNormal = false;
-                normalReloadImage.fillAmount = 0;                
+                normalReloadImage.fillAmount = 0;
                 audioSource.Play();
                 GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
                 bullet.transform.SetParent(trashCollocter);
                 bullet.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
-            }                
+            }
         }
         public void SpecialShot()
         {
             if (canShootSpecial)
-            {                
+            {
                 specialReloadImage.fillAmount = 0;
                 _game.statistics.playerSpecialBulletsFired++;
                 _game.statistics.money -= 2500;
@@ -115,7 +115,7 @@ public class Player_Manager : MonoBehaviour
     public class Shield
     {
         public bool isActive;
-        public float shieldTotal;        
+        public float shieldTotal;
         public float rechargeRate;
         public int upgradeLevel = 0;
 
@@ -128,7 +128,6 @@ public class Player_Manager : MonoBehaviour
             float amount = ((float)shieldTotal / (float)1.0f);
             shieldHUDText.text = amount.ToString("P00");
             image.fillAmount = amount;
-            float alpha = (float)255 * (float)amount;
         }
     }
 
@@ -194,36 +193,54 @@ public class Player_Manager : MonoBehaviour
     }
     public void SetVariables()
     {
+        transform.GetChild(0).gameObject.SetActive(true); // enable armour
+
+        game.statistics.wave = 1;
+        game.statistics.waveTime = 0;
+        game.statistics.money = 0;
+
+        movement.upgradeLevel = 0;
         movement.speed = 1;
-        
+
+        armour.upgradeLevel = 0;
         armour.isAlive = true;
         armour.maxArmour = 1;
         armour.currentArmour = armour.maxArmour;
 
+        weapon.upgradeLevel = 0;
+        weapon.canShootNormal = false;
+        weapon.canShootSpecial = false;
         weapon.normalTime = 0;
         weapon.normalFireRate = 2.2f;
         weapon.specialFireRate = 15;
         weapon.bulletSpeed = 5;
 
+        transform.GetChild(1).gameObject.SetActive(true); // enable shield
+        shield.upgradeLevel = 0;
         shield.isActive = true;
         shield.shieldTotal = 1;
         shield.rechargeRate = 0.05f;
     }
     public void WaveReset()
     {
+        game.statistics.waveTime = 0;
+        Debug.Log("wave time: " + game.statistics.waveTime);
+
         weapon.canShootNormal = false;
         weapon.canShootSpecial = false;
-        int armourRepaired = armour.maxArmour - armour.currentArmour;
-        Debug.Log("Armour repaired " + armourRepaired);
-        game.statistics.money -= (2500 * armourRepaired);
-        Debug.Log("Armour repair cost: " + (2500 * armourRepaired));
-        game.statistics.playerArmourRepairs += armourRepaired;
+
         armour.currentArmour = armour.maxArmour;
+        armour.UpdateDisplay();
+        int armourRepaired = armour.maxArmour - armour.currentArmour;
+        game.statistics.money -= (2500 * armourRepaired);
+        game.statistics.playerArmourRepairs += armourRepaired;        
+
+        shield.shieldTotal = 1;
+        shield.UpdateDisplay();
+        transform.GetChild(1).gameObject.SetActive(true); // enable shield
+
+        // reload weapons
         weapon.normalTime = weapon.normalFireRate;
         weapon.specialTime = weapon.specialFireRate;
-        transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(1).gameObject.SetActive(true);        
-        weapon.specialTime = weapon.specialFireRate;
-        weapon.normalTime = weapon.normalFireRate;        
     }
 }
