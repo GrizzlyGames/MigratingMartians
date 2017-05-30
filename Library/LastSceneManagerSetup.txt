@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_MyAssets/_Scenes/Game.unity
+- path: Assets/_MyAssets/_Scenes/temp animation scene.unity
   isLoaded: 1
   isActive: 1

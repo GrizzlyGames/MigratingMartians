@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 [RequireComponent(typeof(ClampToScreen_Script))]
-[RequireComponent(typeof(Animator))]
 public class Enemy_AI : MonoBehaviour
 {
     public int type;
