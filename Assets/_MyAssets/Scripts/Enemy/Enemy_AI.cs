@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 [RequireComponent(typeof(ClampToScreen_Script))]
+[RequireComponent(typeof(Animator))]
 public class Enemy_AI : MonoBehaviour
 {
     public int type;
@@ -21,6 +22,7 @@ public class Enemy_AI : MonoBehaviour
     public float shootTime;
     private Image healthImage;
     private Vector2 destination;
+    private Animator anim;
     private Game_Manager game;
     private Player_Manager player;
     private ClampToScreen_Script clamp;
@@ -29,6 +31,7 @@ public class Enemy_AI : MonoBehaviour
     {
         health = maxHealth;
         healthImage = transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        anim = this.transform.GetChild(0).GetComponent<Animator>();
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
         player = GameObject.Find("Player").GetComponent<Player_Manager>();
         clamp = GetComponent<ClampToScreen_Script>();
@@ -99,6 +102,8 @@ public class Enemy_AI : MonoBehaviour
                 Destroy(collision.gameObject);
             if (health < 1 || collision.transform.CompareTag("SpecialBullet"))
                 Death();
+            else
+                anim.SetTrigger("Hit");
         }
     }
     private void MoveDown()

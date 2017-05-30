@@ -220,8 +220,6 @@ public class Player_Manager : MonoBehaviour
     public void WaveReset()
     {
         game.statistics.waveTime = 0;
-        Debug.Log("wave time: " + game.statistics.waveTime);
-
         weapon.canShootNormal = false;
         weapon.canShootSpecial = false;
 

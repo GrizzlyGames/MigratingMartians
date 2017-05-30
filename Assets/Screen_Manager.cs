@@ -120,9 +120,6 @@ public class Screen_Manager : MonoBehaviour
 
                         if (game.statistics.waveTime >= game.statistics.waveDuration)
                         {
-                            Debug.Log("wave time: " + game.statistics.waveTime);
-                            Debug.Log("wave duration: " + game.statistics.waveDuration);
-                            Debug.Log("wave time reached.");
                             game.statistics.waveCompletePending = true;
                         }
                         else
@@ -195,7 +192,6 @@ public class Screen_Manager : MonoBehaviour
 
     public void SetStore()
     {
-        Debug.Log("Store prices updated.");
         bankText.text = game.statistics.money.ToString("C00");
         if (player.weapon.upgradeLevel < 5)
         {
@@ -218,8 +214,6 @@ public class Screen_Manager : MonoBehaviour
         {
             shieldCostText.text = "SOLD";
         }
-
-        Debug.Log("Tread upgrade level: " + player.movement.upgradeLevel);
         if (player.movement.upgradeLevel < 5)
         {
             treadLevelText.text = "LVL: " + (player.movement.upgradeLevel + 1).ToString("N00") + "/5";
@@ -377,8 +371,11 @@ public class Screen_Manager : MonoBehaviour
     {
         float rndTime = Random.Range(0.5f, 2);
         yield return new WaitForSeconds(rndTime);
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 21 && !game.statistics.waveCompletePending)
-            game.SpawnEnemy();
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 21)
+        {
+            if (!game.statistics.waveCompletePending)
+                game.SpawnEnemy();
+        }
         else
             Debug.Log("Too many enemies.");
     }
