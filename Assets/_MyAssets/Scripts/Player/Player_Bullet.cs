@@ -47,7 +47,7 @@ public class Player_Bullet : MonoBehaviour
         }
         if (other.gameObject.tag == "Explosion")
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 

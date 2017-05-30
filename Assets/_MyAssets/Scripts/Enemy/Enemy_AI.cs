@@ -11,12 +11,12 @@ public class Enemy_AI : MonoBehaviour
     public float flySpeed;
     public float bulletSpeed;
     public float fireRate;
-    
+
     public bool canShoot = false;
     public GameObject bullet;
     public GameObject explosion;
 
-    
+
     private float moveTime;
     public float shootTime;
     private Image healthImage;
@@ -43,8 +43,8 @@ public class Enemy_AI : MonoBehaviour
                 MoveDown();
             }
             else
-            {                
-                if(shootTime >= fireRate && player.armour.isAlive)
+            {
+                if (shootTime >= fireRate && player.armour.isAlive)
                 {
                     shootTime = 0;
                     GameObject bullet = Instantiate(this.bullet, this.transform.position, Quaternion.identity) as GameObject;
@@ -56,9 +56,9 @@ public class Enemy_AI : MonoBehaviour
                 moveTime += Time.deltaTime;
                 if (moveTime >= 3)
                 {
-                    moveTime = 0;                    
+                    moveTime = 0;
                     destination.x = Random.Range(clamp.GetLimitations().w, clamp.GetLimitations().x);
-                    destination.y = Random.Range(0, clamp.GetLimitations().y);                                       
+                    destination.y = Random.Range(0, clamp.GetLimitations().y);
                 }
                 transform.position = Vector2.MoveTowards(transform.position, destination, flySpeed * Time.deltaTime);
             }
@@ -77,7 +77,7 @@ public class Enemy_AI : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("PlayerBullet") || collision.transform.CompareTag("SpecialBullet") || collision.transform.CompareTag("Explosion"))
-        {            
+        {
             switch (type)
             {
                 case 1:
@@ -95,8 +95,9 @@ public class Enemy_AI : MonoBehaviour
             }
             health--;
             healthImage.fillAmount = (float)health / (float)maxHealth;
-            Destroy(collision.gameObject);
-            if (health < 1)
+            if (!collision.transform.CompareTag("Explosion"))
+                Destroy(collision.gameObject);
+            if (health < 1 || collision.transform.CompareTag("SpecialBullet"))
                 Death();
         }
     }

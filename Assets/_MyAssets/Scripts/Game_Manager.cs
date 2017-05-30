@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class Game_Manager : MonoBehaviour
 {
     public Transform trashCollocter;
-    public float difficultyMultiplier = 0.05f;
     public GameObject topPanelGO;
     public Text notificationText;
 
@@ -24,15 +23,37 @@ public class Game_Manager : MonoBehaviour
         public int money;
         public int gameScore;
 
-        public int playerBulletsFired = 0;
-        public int playerSpecialBulletsFired = 0;
-        public int playerArmourRepairs = 0;
-        public int enemyBulletType3Destroyed = 0;
-        public int enemyBulletType4Destroyed = 0;
-        public int enemyType1Killed = 0;
-        public int enemyType2Killed = 0;
-        public int enemyType3Killed = 0;
-        public int enemyType4Killed = 0;
+        public int playerBulletsFired;
+        public int playerSpecialBulletsFired;
+        public int playerArmourRepairs;
+        public int enemyBulletType3Destroyed;
+        public int enemyBulletType4Destroyed;
+        public int enemyType1Killed;
+        public int enemyType2Killed;
+        public int enemyType3Killed;
+        public int enemyType4Killed;
+
+        public void ResetVariables()
+        {
+            waveComplete = false;
+            waveCompletePending = false;
+            gameStarted = false;
+            waveTime = 0;
+            waveDuration = 15;
+            wave = 1;
+            money = 0;
+            gameScore = 0;
+
+            playerBulletsFired = 0;
+            playerSpecialBulletsFired = 0;
+            playerArmourRepairs = 0;
+            enemyBulletType3Destroyed = 0;
+            enemyBulletType4Destroyed = 0;
+            enemyType1Killed = 0;
+            enemyType2Killed = 0;
+            enemyType3Killed = 0;
+            enemyType4Killed = 0;
+        }
 
         public void BankDeposit(int amt)
         {
@@ -50,10 +71,18 @@ public class Game_Manager : MonoBehaviour
     public Store store = new Store();
     public class Store
     {
-        public int shieldCost = 250000;
-        public int treadCost = 25000;
-        public int cannonCost = 125000;
-        public int armourCost = 75000;
+        public int shieldCost;
+        public int treadCost;
+        public int cannonCost;
+        public int armourCost;
+
+        public void ResetPrices()
+        {
+            shieldCost = 250000;
+            treadCost = 25000;
+            cannonCost = 125000;
+            armourCost = 75000;
+        }
     }
 
     public bool resetPrefs = true;
@@ -74,38 +103,69 @@ public class Game_Manager : MonoBehaviour
         Vector3 screenVec = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         GameObject go = Instantiate(Enemies[rnd], new Vector3(Random.Range((float)-screenVec.x, (float)screenVec.x), (float)screenVec.y, 0), Quaternion.identity) as GameObject;
         go.transform.SetParent(trashCollocter.transform);
-        switch (rnd)
+
+        if (statistics.wave < 20)
         {
-            case 0:
-                go.GetComponent<Enemy_AI>().maxHealth = 1;
-                go.GetComponent<Enemy_AI>().flySpeed = 1.5f + (statistics.wave * (difficultyMultiplier * 2));
-                break;
-            case 1:
-                go.GetComponent<Enemy_AI>().maxHealth = 2;
-                go.GetComponent<Enemy_AI>().flySpeed = 0.75f + (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().fireRate = 7 - (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().bulletSpeed = 1 + (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().shootTime = 5;
-                break;
-            case 2:
-                go.GetComponent<Enemy_AI>().maxHealth = 2;
-                go.GetComponent<Enemy_AI>().flySpeed = 0.75f + (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().fireRate = 5 - (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().bulletSpeed = 0.75f + (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().shootTime = 3;
-                break;
-            case 3:
-                go.GetComponent<Enemy_AI>().maxHealth = 3;
-                go.GetComponent<Enemy_AI>().flySpeed = 0.5f + (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().fireRate = 3 - (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().bulletSpeed = 0.5f + (statistics.wave * difficultyMultiplier);
-                go.GetComponent<Enemy_AI>().shootTime = 1.5f;
-                break;
+            switch (rnd)
+            {
+                case 0:
+                    go.GetComponent<Enemy_AI>().maxHealth = 1;
+                    go.GetComponent<Enemy_AI>().flySpeed = 1 + (statistics.wave * 0.25f);
+                    break;
+                case 1:
+                    go.GetComponent<Enemy_AI>().maxHealth = 2;
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.4f + (statistics.wave * 0.1f);
+                    go.GetComponent<Enemy_AI>().fireRate = 7.25f - (statistics.wave * 0.25f);
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.75f + (statistics.wave * 0.2f);
+                    break;
+                case 2:
+                    go.GetComponent<Enemy_AI>().maxHealth = 2;
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.4f + (statistics.wave * 0.1f);
+                    go.GetComponent<Enemy_AI>().fireRate = 6 - (statistics.wave * 0.25f);
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.5f + (statistics.wave * 0.2f);
+                    break;
+                case 3:
+                    go.GetComponent<Enemy_AI>().maxHealth = 3;
+                    go.GetComponent<Enemy_AI>().flySpeed = 0.2f + (statistics.wave * 0.1f);
+                    go.GetComponent<Enemy_AI>().fireRate = 3 - (statistics.wave * 0.05f);
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 0.15f + (statistics.wave * 0.1f);
+                    break;
+            }
         }
+        else
+        {
+            switch (rnd)
+            {
+                case 0:
+                    go.GetComponent<Enemy_AI>().maxHealth = 1;
+                    go.GetComponent<Enemy_AI>().flySpeed = 6;
+                    break;
+                case 1:
+                    go.GetComponent<Enemy_AI>().maxHealth = 2;
+                    go.GetComponent<Enemy_AI>().flySpeed = 2.4f;
+                    go.GetComponent<Enemy_AI>().fireRate = 2.25f;
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 4.75f;
+                    break;
+                case 2:
+                    go.GetComponent<Enemy_AI>().maxHealth = 2;
+                    go.GetComponent<Enemy_AI>().flySpeed = 2.4f;
+                    go.GetComponent<Enemy_AI>().fireRate = 1;
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 4.5f;
+                    break;
+                case 3:
+                    go.GetComponent<Enemy_AI>().maxHealth = 3;
+                    go.GetComponent<Enemy_AI>().flySpeed = 2.2f;
+                    go.GetComponent<Enemy_AI>().fireRate = 2;
+                    go.GetComponent<Enemy_AI>().bulletSpeed = 2.1f;
+                    break;
+            }
+        }
+
+        go.GetComponent<Enemy_AI>().shootTime = 0;
     }
 
     public IEnumerator WaveStart()
-    {   
+    {
         topPanelGO.SetActive(true);
         notificationText.text = "WAVE " + statistics.wave.ToString();
         yield return new WaitForSeconds(0.01f);
@@ -124,14 +184,42 @@ public class Game_Manager : MonoBehaviour
         statistics.waveCompletePending = false;
 
 
-        if (statistics.wave < 4)
-            statistics.waveDuration = 15;
-        else if (statistics.wave >= 4 && statistics.wave < 7)
-            statistics.waveDuration = 30;
-        else if (statistics.wave >= 7 && statistics.wave < 10)
-            statistics.waveDuration = 45;
-        else
-            statistics.waveDuration = 60;
+        switch (statistics.wave)
+        {
+            case 1:
+                statistics.waveDuration = 10;
+                break;
+            case 2:
+                statistics.waveDuration = 15;
+                break;
+            case 3:
+                statistics.waveDuration = 20;
+                break;
+            case 4:
+                statistics.waveDuration = 25;
+                break;
+            case 5:
+                statistics.waveDuration = 30;
+                break;
+            case 6:
+                statistics.waveDuration = 35;
+                break;
+            case 7:
+                statistics.waveDuration = 40;
+                break;
+            case 8:
+                statistics.waveDuration = 45;
+                break;
+            case 9:
+                statistics.waveDuration = 50;
+                break;
+            case 10:
+                statistics.waveDuration = 55;
+                break;
+            default:
+                statistics.waveDuration = 60;
+                break;
+        }
 
         statistics.gameStarted = true;
     }

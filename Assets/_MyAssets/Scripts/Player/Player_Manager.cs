@@ -191,14 +191,9 @@ public class Player_Manager : MonoBehaviour
         transform.position = new Vector3(this.transform.position.x + translation, this.transform.position.y, 0);
         #endregion
     }
-    public void SetVariables()
+    public void ResetVariables()
     {
         transform.GetChild(0).gameObject.SetActive(true); // enable armour
-
-        game.statistics.wave = 1;
-        game.statistics.waveTime = 0;
-        game.statistics.money = 0;
-        game.statistics.gameScore = 0;
 
         movement.upgradeLevel = 0;
         movement.speed = 1;
@@ -212,7 +207,7 @@ public class Player_Manager : MonoBehaviour
         weapon.canShootNormal = false;
         weapon.canShootSpecial = false;
         weapon.normalTime = 0;
-        weapon.normalFireRate = 2.2f;
+        weapon.normalFireRate = 3;
         weapon.specialFireRate = 15;
         weapon.bulletSpeed = 5;
 

@@ -10,31 +10,29 @@ public class Store_Manager : MonoBehaviour
 
     private void Start()
     {
-        game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();        
+        game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
     }
 
     public void Purchase(int i)
     {
-        switch (i) 
+        switch (i)
         {
             case 0: // Cannon
                 if (game.statistics.money >= game.store.cannonCost && player.weapon.upgradeLevel < 5)
                 {
                     player.weapon.upgradeLevel++;
-                    if(player.weapon.upgradeLevel == 5)
+                    if (player.weapon.upgradeLevel == 5)
                     {
                         screen.turretCostText.text = "SOLD";
                     }
-                    player.weapon.normalFireRate -= 0.3f;
-                    player.weapon.specialFireRate -= 0.5f;
+                    player.weapon.normalFireRate -= 0.4f;
+                    player.weapon.specialFireRate -= 1;
                     player.weapon.bulletSpeed += 1;
 
                     game.statistics.BankWithdrawal(game.store.cannonCost);
                     game.store.cannonCost *= 2;
                     game.screenManager.SetStore();
                 }
-                else
-                    player.weapon.upgradeLevel++;
                 break;
             case 1: // Shield
                 if (game.statistics.money >= game.store.shieldCost && player.shield.upgradeLevel < 5)
@@ -61,7 +59,6 @@ public class Store_Manager : MonoBehaviour
                         screen.treadCostText.text = "SOLD";
                     }
                     player.movement.speed += 0.5f;
-                    Debug.Log("Player movement speed: " + player.movement.speed);
                     game.statistics.BankWithdrawal(game.store.treadCost);
                     game.store.treadCost *= 2;
                     game.screenManager.SetStore();
@@ -83,6 +80,6 @@ public class Store_Manager : MonoBehaviour
                     game.screenManager.SetStore();
                 }
                 break;
-        }        
+        }
     }
 }

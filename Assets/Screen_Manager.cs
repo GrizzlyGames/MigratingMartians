@@ -105,14 +105,17 @@ public class Screen_Manager : MonoBehaviour
                             {
                                 game.statistics.waveComplete = true;
                                 StartCoroutine(game.WaveCompleteDelay());
-                            }                            
+                            }
                         }
                     }
                     else // GAME RUNNING  Wave is not complete and not pending completion
                     {
                         if (GameObject.FindGameObjectsWithTag("Enemy").Length < 1)
+                        {
                             game.SpawnEnemy();
-                        game.statistics.waveTime += Time.deltaTime;                      
+                        }
+
+                        game.statistics.waveTime += Time.deltaTime;
 
 
                         if (game.statistics.waveTime >= game.statistics.waveDuration)
@@ -134,53 +137,54 @@ public class Screen_Manager : MonoBehaviour
                                 switch (game.statistics.wave)
                                 {
                                     case 1:
-                                        rndDelay = Random.Range(10, 21);
-                                        rndAmt = Random.Range(1, 3);
+                                        rndDelay = Random.Range(3, 7);
+                                        rndAmt = 1;
                                         break;
                                     case 2:
-                                        rndDelay = Random.Range(9.5f, 20);
+                                        rndDelay = Random.Range(4, 8);
                                         rndAmt = Random.Range(1, 3);
                                         break;
                                     case 3:
-                                        rndDelay = Random.Range(9, 19);
+                                        rndDelay = Random.Range(5, 9);
                                         rndAmt = Random.Range(1, 4);
                                         break;
                                     case 4:
-                                        rndDelay = Random.Range(8.5f, 18);
-                                        rndAmt = Random.Range(2, 4);
+                                        rndDelay = Random.Range(6, 10);
+                                        rndAmt = Random.Range(2, 5);
                                         break;
                                     case 5:
-                                        rndDelay = Random.Range(8, 17);
-                                        rndAmt = Random.Range(2, 5);
+                                        rndDelay = Random.Range(7, 11);
+                                        rndAmt = Random.Range(2, 6);
                                         break;
                                     case 6:
-                                        rndDelay = Random.Range(7.5f, 16);
-                                        rndAmt = Random.Range(2, 5);
+                                        rndDelay = Random.Range(8, 12);
+                                        rndAmt = Random.Range(2, 7);
                                         break;
                                     case 7:
-                                        rndDelay = Random.Range(7, 15);
-                                        rndAmt = Random.Range(3, 6);
+                                        rndDelay = Random.Range(9, 13);
+                                        rndAmt = Random.Range(3, 8);
                                         break;
                                     case 8:
-                                        rndDelay = Random.Range(6.5f, 14);
-                                        rndAmt = Random.Range(3, 6);
+                                        rndDelay = Random.Range(10, 14);
+                                        rndAmt = Random.Range(3, 9);
                                         break;
                                     case 9:
-                                        rndDelay = Random.Range(6, 13);
-                                        rndAmt = Random.Range(3, 7);
+                                        rndDelay = Random.Range(11, 15);
+                                        rndAmt = Random.Range(3, 10);
                                         break;
                                     case 10:
-                                        rndDelay = Random.Range(6.5f, 12);
-                                        rndAmt = Random.Range(4, 7);
+                                        rndDelay = Random.Range(12, 16);
+                                        rndAmt = Random.Range(4, 11);
                                         break;
                                     default:
-                                        rndDelay = Random.Range(6, 11);
-                                        rndAmt = Random.Range(4, 8);
+                                        rndDelay = Random.Range(13, 17);
+                                        rndAmt = Random.Range(4, 12);
+                                        Debug.Log("Random spawn amt: " + rndAmt);
                                         break;
                                 }
 
                                 for (int i = 0; i < rndAmt; i++)
-                                    game.SpawnEnemy();
+                                    StartCoroutine(SpawnEnemyDelay());
                             }
                         }
                     }
@@ -254,7 +258,9 @@ public class Screen_Manager : MonoBehaviour
         switch (screenIndex)
         {
             case 0: // Splash
-                player.SetVariables();
+                player.ResetVariables();
+                game.statistics.ResetVariables();
+                game.store.ResetPrices();
                 break;
             case 1: // Home    
                 break;
@@ -353,13 +359,13 @@ public class Screen_Manager : MonoBehaviour
                 enemyType2KilledTotal.text = (game.statistics.enemyType2Killed * 25000).ToString("C00");
                 enemyType3KilledTotal.text = (game.statistics.enemyType3Killed * 25000).ToString("C00");
                 enemyType4KilledTotal.text = (game.statistics.enemyType4Killed * 30000).ToString("C00");
-                                
+
                 // Updates scores page
                 lastScore.text = "SCORE\n" + game.statistics.gameScore.ToString("C00");
                 lastWave.text = "WAVE\n" + game.statistics.wave.ToString("N00");
 
                 // death details total score
-                totalScore.text = game.statistics.gameScore.ToString("C00");                
+                totalScore.text = game.statistics.gameScore.ToString("C00");
                 break;
             case 6: // Score
                 highScore.text = "SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
@@ -367,7 +373,15 @@ public class Screen_Manager : MonoBehaviour
                 break;
         }
     }
-
+    private IEnumerator SpawnEnemyDelay()
+    {
+        float rndTime = Random.Range(0.5f, 2);
+        yield return new WaitForSeconds(rndTime);
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 21 && !game.statistics.waveCompletePending)
+            game.SpawnEnemy();
+        else
+            Debug.Log("Too many enemies.");
+    }
     private void HandleShowResult(ShowResult result)
     {
         switch (result)
