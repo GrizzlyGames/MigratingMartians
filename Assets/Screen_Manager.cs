@@ -29,12 +29,9 @@ public class Screen_Manager : MonoBehaviour
     public Text newHighScoreText;
     public Text newWaveText;
 
-
-    public Text playerBulletsFired;
-    public Text playerSpecialBulletsFired;
-    public Text playerArmourRepaires;
-    public Text enemyBullet3Fired;
-    public Text enemyBullet4Fired;
+    public Text redBulletsQtyText;
+    public Text blueBulletsQtyText;
+    public Text pinkBulletsQtyText;
     public Text enemyType1Killed;
     public Text enemyType2Killed;
     public Text enemyType3Killed;
@@ -42,11 +39,9 @@ public class Screen_Manager : MonoBehaviour
 
     public Text totalScore;
 
-    public Text playerBulletsFiredTotal;
-    public Text playerSpecialBulletsFiredTotal;
-    public Text playerArmourRepairesTotal;
-    public Text enemyBullet3FiredTotal;
-    public Text enemyBullet4FiredTotal;
+    public Text redBulletsTotalText;
+    public Text blueBulletsTotalText;
+    public Text pinkBulletsTotalText;
     public Text enemyType1KilledTotal;
     public Text enemyType2KilledTotal;
     public Text enemyType3KilledTotal;
@@ -127,7 +122,6 @@ public class Screen_Manager : MonoBehaviour
                             spawnTimer += Time.deltaTime;
                             if (spawnTimer > rndDelay)
                             {
-                                Debug.Log("rnd delay: " + rndDelay);
                                 spawnTimer = 0;
                                 int rndAmt = 1;
 
@@ -292,7 +286,7 @@ public class Screen_Manager : MonoBehaviour
                     player.armour.upgradeLevel = 5;
                 break;
             case 5: // Game Over
-                game.statistics.gameScore = ((game.statistics.enemyBulletType4Destroyed * 500) + (game.statistics.enemyBulletType3Destroyed * 1500) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000)) - ((game.statistics.playerBulletsFired * 500) + (game.statistics.playerSpecialBulletsFired * 2500) + (game.statistics.playerArmourRepairs * 2500));
+                game.statistics.gameScore = ((game.statistics.pinkBulletsDestroyed * 1000) + (game.statistics.blueBulletsDestroyed * 2500) + (game.statistics.redBulletsDestroyed * 5000) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000));
 
                 if (Advertisement.IsReady("rewardedVideo"))
                 {
@@ -333,22 +327,17 @@ public class Screen_Manager : MonoBehaviour
                     PlayerPrefs.SetInt("HighWave", game.statistics.wave);
                 }
 
+                pinkBulletsQtyText.text = game.statistics.pinkBulletsDestroyed.ToString("N000");
+                blueBulletsQtyText.text = game.statistics.blueBulletsDestroyed.ToString("N000");
+                redBulletsQtyText.text = game.statistics.redBulletsDestroyed.ToString("N000");
+                enemyType1Killed.text = game.statistics.enemyType1Killed.ToString("N000");
+                enemyType2Killed.text = game.statistics.enemyType2Killed.ToString("N000");
+                enemyType3Killed.text = game.statistics.enemyType3Killed.ToString("N000");
+                enemyType4Killed.text = game.statistics.enemyType4Killed.ToString("N000");
 
-                playerBulletsFired.text = game.statistics.playerBulletsFired.ToString();
-                playerSpecialBulletsFired.text = game.statistics.playerSpecialBulletsFired.ToString();
-                playerArmourRepaires.text = game.statistics.playerArmourRepairs.ToString();
-                enemyBullet4Fired.text = game.statistics.enemyBulletType4Destroyed.ToString();
-                enemyBullet3Fired.text = game.statistics.enemyBulletType3Destroyed.ToString();
-                enemyType1Killed.text = game.statistics.enemyType1Killed.ToString();
-                enemyType2Killed.text = game.statistics.enemyType2Killed.ToString();
-                enemyType3Killed.text = game.statistics.enemyType3Killed.ToString();
-                enemyType4Killed.text = game.statistics.enemyType4Killed.ToString();
-
-                playerBulletsFiredTotal.text = "-" + (game.statistics.playerBulletsFired * 500).ToString("C00");
-                playerSpecialBulletsFiredTotal.text = "-" + (game.statistics.playerSpecialBulletsFired * 2500).ToString("C00");
-                playerArmourRepairesTotal.text = "-" + (game.statistics.playerArmourRepairs * 2500).ToString("C00");
-                enemyBullet4FiredTotal.text = (game.statistics.enemyBulletType4Destroyed * 500).ToString("C00");
-                enemyBullet3FiredTotal.text = (game.statistics.enemyBulletType3Destroyed * 1500).ToString("C00");
+                pinkBulletsTotalText.text = (game.statistics.pinkBulletsDestroyed * 1000).ToString("C00");
+                blueBulletsTotalText.text = (game.statistics.blueBulletsDestroyed * 2500).ToString("C00");
+                redBulletsTotalText.text = (game.statistics.redBulletsDestroyed * 5000).ToString("C00");
                 enemyType1KilledTotal.text = (game.statistics.enemyType1Killed * 10000).ToString("C00");
                 enemyType2KilledTotal.text = (game.statistics.enemyType2Killed * 25000).ToString("C00");
                 enemyType3KilledTotal.text = (game.statistics.enemyType3Killed * 25000).ToString("C00");

@@ -122,6 +122,7 @@
     <Compile Include="Assets\Exit_Button.cs" />
     <Compile Include="Assets\Screen_Manager.cs" />
     <Compile Include="Assets\Store_Button.cs" />
+    <Compile Include="Assets\TextPoints_Script.cs" />
     <Compile Include="Assets\_MyAssets\Scripts\Enemy\Enemy_AI.cs" />
     <Compile Include="Assets\_MyAssets\Scripts\Enemy\Enemy_Bullet.cs" />
     <Compile Include="Assets\_MyAssets\Scripts\Enemy\Enemy_Eye.cs" />

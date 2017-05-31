@@ -16,7 +16,6 @@ public class Enemy_AI : MonoBehaviour
     public GameObject bullet;
     public GameObject explosion;
 
-
     private float moveTime;
     public float shootTime;
     private Image healthImage;
@@ -25,11 +24,13 @@ public class Enemy_AI : MonoBehaviour
     private Game_Manager game;
     private Player_Manager player;
     private ClampToScreen_Script clamp;
+    private TextPoints_Script pointsScript;
 
     private void Start()
     {
         health = maxHealth;
-        healthImage = transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        healthImage = transform.GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+        pointsScript = this.transform.GetChild(1).GetChild(0).GetComponent<TextPoints_Script>();
         anim = this.transform.GetChild(0).GetComponent<Animator>();
         game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
         player = GameObject.Find("Player").GetComponent<Player_Manager>();
@@ -84,15 +85,19 @@ public class Enemy_AI : MonoBehaviour
             {
                 case 1:
                     game.statistics.BankDeposit(2000);
+                    pointsScript.UpdateText("+2000");
                     break;
                 case 2:
                     game.statistics.BankDeposit(12500);
+                    pointsScript.UpdateText("+12500");
                     break;
                 case 3:
                     game.statistics.BankDeposit(12500);
+                    pointsScript.UpdateText("+12500");
                     break;
                 case 4:
                     game.statistics.BankDeposit(10000);
+                    pointsScript.UpdateText("+10000");
                     break;
             }
             health--;
@@ -111,6 +116,7 @@ public class Enemy_AI : MonoBehaviour
     }
     public void Death()
     {
+        pointsScript.Death();        
         switch (type)
         {
             case 1:
@@ -129,5 +135,5 @@ public class Enemy_AI : MonoBehaviour
         GameObject go = Instantiate(explosion, this.transform.position, Quaternion.identity) as GameObject;
         go.transform.SetParent(game.trashCollocter);
         Destroy(this.gameObject);
-    }
+    }    
 }

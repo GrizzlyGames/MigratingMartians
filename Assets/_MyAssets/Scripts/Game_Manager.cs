@@ -23,11 +23,9 @@ public class Game_Manager : MonoBehaviour
         public int money;
         public int gameScore;
 
-        public int playerBulletsFired;
-        public int playerSpecialBulletsFired;
-        public int playerArmourRepairs;
-        public int enemyBulletType3Destroyed;
-        public int enemyBulletType4Destroyed;
+        public int redBulletsDestroyed;
+        public int blueBulletsDestroyed;
+        public int pinkBulletsDestroyed;
         public int enemyType1Killed;
         public int enemyType2Killed;
         public int enemyType3Killed;
@@ -44,11 +42,9 @@ public class Game_Manager : MonoBehaviour
             money = 0;
             gameScore = 0;
 
-            playerBulletsFired = 0;
-            playerSpecialBulletsFired = 0;
-            playerArmourRepairs = 0;
-            enemyBulletType3Destroyed = 0;
-            enemyBulletType4Destroyed = 0;
+            redBulletsDestroyed = 0;
+            blueBulletsDestroyed = 0;
+            pinkBulletsDestroyed = 0;
             enemyType1Killed = 0;
             enemyType2Killed = 0;
             enemyType3Killed = 0;
@@ -69,6 +65,7 @@ public class Game_Manager : MonoBehaviour
     }
 
     public Store store = new Store();
+    [System.Serializable]
     public class Store
     {
         public int shieldCost;
@@ -79,9 +76,9 @@ public class Game_Manager : MonoBehaviour
         public void ResetPrices()
         {
             shieldCost = 250000;
-            treadCost = 25000;
-            cannonCost = 125000;
-            armourCost = 75000;
+            treadCost = 50000;
+            cannonCost = 150000;
+            armourCost = 100000;
         }
     }
 

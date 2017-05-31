@@ -9,8 +9,7 @@ public class Enemy_Eye : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player_Manager>();
-        Debug.Log(this.transform.root.transform.name + " found player manager: " + GameObject.Find("Player").GetComponent<Player_Manager>());
+        player = GameObject.Find("Player").GetComponent<Player_Manager>();        
     }
 
     private void Update()

@@ -9,10 +9,8 @@ public class Player_Manager : MonoBehaviour
     public bool isMobile = true;
     public Game_Manager game;
 
-    public GameObject normalBulletGO;
-    public GameObject specialBulletGO;
-
     public Input input = new Input();
+    [System.Serializable]
     public class Input
     {
         public Vector2 mStartPosition;
@@ -24,13 +22,15 @@ public class Player_Manager : MonoBehaviour
     }
 
     public Movement movement = new Movement();
+    [System.Serializable]
     public class Movement
     {
         public float speed;
         public int upgradeLevel = 0;
     }
-
+        
     public Armour armour = new Armour();
+    [System.Serializable]
     public class Armour
     {
         public bool isAlive = true;
@@ -48,6 +48,7 @@ public class Player_Manager : MonoBehaviour
     }
 
     public Weapon weapon = new Weapon();
+    [System.Serializable]
     public class Weapon
     {
         public float normalTime;
@@ -57,28 +58,28 @@ public class Player_Manager : MonoBehaviour
         public float bulletSpeed;
         public int upgradeLevel = 0;
         public Game_Manager _game;
+        public Animator anim;
         public AudioSource audioSource;
-        public GameObject projectileGO;
-        public GameObject specialBullet;
+        public GameObject normalBulletGO;
+        public GameObject specialBulletGO;
         public Transform trashCollocter;
         public Transform spawnTransform;
         public Transform turretTransform;
         public bool canShootNormal;
         public bool canShootSpecial;
-        public Image normalReloadImage;
-        public Image specialReloadImage;
-        public Image bulletImage;
+
+        public Image weaponNormalReloadHUD_Image;
+        public Image weaponSpecialReloadHUD_Image;
 
         public void Shoot()
         {
             if (canShootNormal)
             {
-                _game.statistics.playerBulletsFired++;
-                _game.statistics.money -= 500;
+                anim.SetTrigger("shoot");
                 canShootNormal = false;
-                normalReloadImage.fillAmount = 0;
+                weaponNormalReloadHUD_Image.fillAmount = 0;
                 audioSource.Play();
-                GameObject bullet = Instantiate(projectileGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
+                GameObject bullet = Instantiate(normalBulletGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed;
                 bullet.transform.SetParent(trashCollocter);
                 bullet.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
@@ -88,12 +89,11 @@ public class Player_Manager : MonoBehaviour
         {
             if (canShootSpecial)
             {
-                specialReloadImage.fillAmount = 0;
-                _game.statistics.playerSpecialBulletsFired++;
-                _game.statistics.money -= 2500;
+                anim.SetTrigger("shoot");
+                weaponSpecialReloadHUD_Image.fillAmount = 0;
                 canShootSpecial = false;
                 audioSource.Play();
-                GameObject bullet = Instantiate(specialBullet, spawnTransform.position, spawnTransform.rotation) as GameObject;
+                GameObject bullet = Instantiate(specialBulletGO, spawnTransform.position, spawnTransform.rotation) as GameObject;
                 bullet.GetComponent<Player_Bullet>().speed = bulletSpeed * 2;
                 bullet.transform.SetParent(trashCollocter);
                 bullet.transform.localScale = new Vector3(1, 1, 1);
@@ -102,16 +102,17 @@ public class Player_Manager : MonoBehaviour
 
         public void UpdateNormalDisplay()
         {
-            normalReloadImage.fillAmount = normalTime / normalFireRate;
+            weaponNormalReloadHUD_Image.fillAmount = normalTime / normalFireRate;
         }
 
         public void UpdateSpecialDisplay()
         {
-            specialReloadImage.fillAmount = specialTime / specialFireRate;
+            weaponSpecialReloadHUD_Image.fillAmount = specialTime / specialFireRate;
         }
     }
 
     public Shield shield = new Shield();
+    [System.Serializable]
     public class Shield
     {
         public bool isActive;
@@ -119,41 +120,18 @@ public class Player_Manager : MonoBehaviour
         public float rechargeRate;
         public int upgradeLevel = 0;
 
-        public Image image;
-        public Text shieldHUDText;
+        public Image shieldHUD_Image;
+        public Text shieldHUD_Text;
         public CircleCollider2D collider;
 
         public void UpdateDisplay()
         {
             float amount = ((float)shieldTotal / (float)1.0f);
-            shieldHUDText.text = amount.ToString("P00");
-            image.fillAmount = amount;
+            shieldHUD_Text.text = amount.ToString("P00");
+            shieldHUD_Image.fillAmount = amount;
         }
     }
 
-    public Image healthImage;
-    public Image normalReloadImage;
-    public Image specialReloadImage;
-    public Image shieldImage;
-
-    private void Start()
-    {
-        armour.image = healthImage;
-        weapon.normalReloadImage = normalReloadImage;
-        weapon.specialReloadImage = specialReloadImage;
-        shield.image = shieldImage;
-        armour.armourHUDText = GameObject.Find("armourHUDText").GetComponent<Text>();
-        shield.shieldHUDText = GameObject.Find("shieldHUDText").GetComponent<Text>();
-        game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<Game_Manager>();
-        weapon._game = game;
-        weapon.specialBullet = specialBulletGO;
-        weapon.trashCollocter = game.trashCollocter;
-        weapon.audioSource = GetComponent<AudioSource>();
-        weapon.turretTransform = transform.GetChild(0).GetChild(0);
-        weapon.spawnTransform = weapon.turretTransform.GetChild(0).GetChild(0);
-        weapon.projectileGO = normalBulletGO;
-        shield.collider = transform.GetChild(1).GetComponent<CircleCollider2D>();
-    }
     private void Update()
     {
         #region Weapon
@@ -207,7 +185,7 @@ public class Player_Manager : MonoBehaviour
         weapon.canShootNormal = false;
         weapon.canShootSpecial = false;
         weapon.normalTime = 0;
-        weapon.normalFireRate = 3;
+        weapon.normalFireRate = 2.5f;
         weapon.specialFireRate = 15;
         weapon.bulletSpeed = 5;
 
@@ -224,10 +202,7 @@ public class Player_Manager : MonoBehaviour
         weapon.canShootSpecial = false;
 
         armour.currentArmour = armour.maxArmour;
-        armour.UpdateDisplay();
-        int armourRepaired = armour.maxArmour - armour.currentArmour;
-        game.statistics.money -= (2500 * armourRepaired);
-        game.statistics.playerArmourRepairs += armourRepaired;        
+        armour.UpdateDisplay();  
 
         shield.shieldTotal = 1;
         shield.UpdateDisplay();
