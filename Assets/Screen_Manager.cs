@@ -271,9 +271,16 @@ public class Screen_Manager : MonoBehaviour
                     player.weapon.upgradeLevel = 5;
 
                 if (player.shield.upgradeLevel <= 5)
+                {
+                    player.shield.shieldSpriteRenderer.sprite = player.shield.shieldSprites[player.shield.upgradeLevel];
                     playerShieldRenderer.sprite = playerShieldSprite[player.shield.upgradeLevel];
+                }
+
                 else
+                {
                     player.shield.upgradeLevel = 5;
+                }
+                    
 
                 if (player.movement.upgradeLevel <= 5)
                     playerTreadsRenderer.sprite = playerTreadsSprite[player.movement.upgradeLevel];

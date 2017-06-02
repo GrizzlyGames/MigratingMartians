@@ -120,6 +120,9 @@ public class Player_Manager : MonoBehaviour
         public float rechargeRate;
         public int upgradeLevel = 0;
 
+        public GameObject shieldGO;
+        public Sprite[] shieldSprites;
+        public SpriteRenderer shieldSpriteRenderer;
         public Image shieldHUD_Image;
         public Text shieldHUD_Text;
         public CircleCollider2D collider;
@@ -190,6 +193,7 @@ public class Player_Manager : MonoBehaviour
         weapon.bulletSpeed = 5;
 
         transform.GetChild(1).gameObject.SetActive(true); // enable shield
+        shield.shieldSpriteRenderer.sprite = shield.shieldSprites[0];
         shield.upgradeLevel = 0;
         shield.isActive = true;
         shield.shieldTotal = 1;
