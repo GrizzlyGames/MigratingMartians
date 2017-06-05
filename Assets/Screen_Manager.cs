@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
+using UnityEngine.SocialPlatforms;
+using GooglePlayGames;
 public class Screen_Manager : MonoBehaviour
 {
     // Store
@@ -79,6 +81,8 @@ public class Screen_Manager : MonoBehaviour
 
     private void Start()
     {
+        PlayGamesPlatform.Activate();
+        ConnectToGoogleServices();
         game = GetComponent<Game_Manager>();
         ScreenChanger(screenIndex);
     }
@@ -86,7 +90,7 @@ public class Screen_Manager : MonoBehaviour
     private float rndDelay;
     private void Update()
     {
-        if (screenIndex == 4)
+        if (screenIndex == 3)
         {
             if (game.statistics.gameStarted)
             {
@@ -252,9 +256,7 @@ public class Screen_Manager : MonoBehaviour
                 break;
             case 1: // Home    
                 break;
-            case 2: // Credits          
-                break;
-            case 3: // Game-Menu         
+            case 2: // Game-Menu         
                 game.statistics.gameStarted = false;
                 foreach (Transform child in game.trashCollocter)
                 {
@@ -262,7 +264,7 @@ public class Screen_Manager : MonoBehaviour
                 }
                 SetStore();
                 break;
-            case 4: // Gameplay
+            case 3: // Gameplay
                 StartCoroutine(game.WaveStart());
                 rndDelay = Random.Range(0.5f, 3);
                 if (player.weapon.upgradeLevel <= 5)
@@ -280,7 +282,7 @@ public class Screen_Manager : MonoBehaviour
                 {
                     player.shield.upgradeLevel = 5;
                 }
-                    
+
 
                 if (player.movement.upgradeLevel <= 5)
                     playerTreadsRenderer.sprite = playerTreadsSprite[player.movement.upgradeLevel];
@@ -292,7 +294,7 @@ public class Screen_Manager : MonoBehaviour
                 else
                     player.armour.upgradeLevel = 5;
                 break;
-            case 5: // Game Over
+            case 4: // Game Over
                 game.statistics.gameScore = ((game.statistics.pinkBulletsDestroyed * 1000) + (game.statistics.blueBulletsDestroyed * 2500) + (game.statistics.redBulletsDestroyed * 5000) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000));
 
                 if (Advertisement.IsReady("rewardedVideo"))
@@ -357,7 +359,7 @@ public class Screen_Manager : MonoBehaviour
                 // death details total score
                 totalScore.text = game.statistics.gameScore.ToString("C00");
                 break;
-            case 6: // Score
+            case 5: // Score
                 highScore.text = "SCORE\n" + PlayerPrefs.GetInt("HighScore").ToString("C00");
                 highWave.text = "WAVE\n" + PlayerPrefs.GetInt("HighWave").ToString("N00");
                 break;
@@ -392,5 +394,17 @@ public class Screen_Manager : MonoBehaviour
                 Debug.LogError("The ad failed to be shown.");
                 break;
         }
+    }
+
+    private bool isConnectedToGoogleServices;
+
+    public bool ConnectToGoogleServices()
+    {
+        if (!isConnectedToGoogleServices)
+            Social.localUser.Authenticate((bool success) =>
+            {
+                isConnectedToGoogleServices = success;
+            }) ;
+        return isConnectedToGoogleServices;
     }
 }

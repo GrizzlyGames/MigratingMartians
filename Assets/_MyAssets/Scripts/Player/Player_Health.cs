@@ -48,7 +48,6 @@ public class Player_Health : MonoBehaviour
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);
         yield return new WaitForSeconds(5);
-        game.screenManager.screenIndex = 3;
-        game.screenManager.ScreenChanger(5);
+        game.screenManager.ScreenChanger(4);
     }
 }

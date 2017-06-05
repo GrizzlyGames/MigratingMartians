@@ -11,4 +11,24 @@ public class Screen_Button_Handler : MonoBehaviour {
     {        
         screen.ScreenChanger(index);
     }
+
+    public void LaunchLeaderBoard()
+    {
+        if (Social.localUser.authenticated)
+        {
+            Social.ShowLeaderboardUI();
+        }
+        else
+            Debug.Log("User not authenticated.");
+    }
+
+    public void LaunchAchievements()
+    {
+        if (Social.localUser.authenticated)
+        {
+            Social.ShowAchievementsUI();
+        }
+        else
+            Debug.Log("User not authenticated.");
+    }
 }

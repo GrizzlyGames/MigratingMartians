@@ -227,8 +227,7 @@ public class Game_Manager : MonoBehaviour
         topPanelGO.SetActive(true);
         notificationText.text = "WAVE COMPLETE!";
         yield return new WaitForSeconds(3);
-        screenManager.screenIndex = 1;
         statistics.wave++;
-        screenManager.ScreenChanger(3);
+        screenManager.ScreenChanger(2);
     }
 }
