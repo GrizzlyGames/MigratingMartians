@@ -29,6 +29,7 @@ public static class MMIIResources
         public const string achievement_wave_3_survived = "CgkI3KDV4-IVEAIQAw"; // <GPGSID>
         public const string achievement_wave_2_survived = "CgkI3KDV4-IVEAIQAg"; // <GPGSID>
         public const string achievement_wave_1_survived = "CgkI3KDV4-IVEAIQAQ"; // <GPGSID>
+        public const string leaderboard_leaderboard = "CgkI3KDV4-IVEAIQBg"; // <GPGSID>
 
 }
 

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
-using UnityEngine.SocialPlatforms;
-using GooglePlayGames;
 public class Screen_Manager : MonoBehaviour
 {
     // Store
@@ -81,7 +78,6 @@ public class Screen_Manager : MonoBehaviour
 
     private void Start()
     {
-        PlayGamesPlatform.Activate();
         ConnectToGoogleServices();
         game = GetComponent<Game_Manager>();
         ScreenChanger(screenIndex);
@@ -296,14 +292,7 @@ public class Screen_Manager : MonoBehaviour
                 break;
             case 4: // Game Over
                 game.statistics.gameScore = ((game.statistics.pinkBulletsDestroyed * 1000) + (game.statistics.blueBulletsDestroyed * 2500) + (game.statistics.redBulletsDestroyed * 5000) + (game.statistics.enemyType1Killed * 10000) + (game.statistics.enemyType2Killed * 25000) + (game.statistics.enemyType3Killed * 25000) + (game.statistics.enemyType4Killed * 30000));
-
-                if (Advertisement.IsReady("rewardedVideo"))
-                {
-                    var options = new ShowOptions { resultCallback = HandleShowResult };
-                    Advertisement.Show("rewardedVideo", options);
-                }
-
-
+                
                 foreach (Transform child in game.trashCollocter)
                 {
                     Destroy(child.gameObject);
@@ -376,24 +365,6 @@ public class Screen_Manager : MonoBehaviour
         }
         else
             Debug.Log("Too many enemies.");
-    }
-    private void HandleShowResult(ShowResult result)
-    {
-        switch (result)
-        {
-            case ShowResult.Finished:
-                Debug.Log("The ad was successfully shown.");
-                //
-                // YOUR CODE TO REWARD THE GAMER
-                // Give coins etc.
-                break;
-            case ShowResult.Skipped:
-                Debug.Log("The ad was skipped before reaching the end.");
-                break;
-            case ShowResult.Failed:
-                Debug.LogError("The ad failed to be shown.");
-                break;
-        }
     }
 
     private bool isConnectedToGoogleServices;
