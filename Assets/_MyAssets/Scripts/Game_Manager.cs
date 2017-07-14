@@ -164,6 +164,12 @@ public class Game_Manager : MonoBehaviour
     public IEnumerator WaveStart()
     {
         topPanelGO.SetActive(true);
+        if(statistics.wave == 1)
+        {
+            notificationText.text = "Tilt to drive, tap to shoot, swipe for special.";
+            yield return new WaitForSeconds(5);
+        }
+
         notificationText.text = "WAVE " + statistics.wave.ToString();
         yield return new WaitForSeconds(0.01f);
         player.WaveReset();
